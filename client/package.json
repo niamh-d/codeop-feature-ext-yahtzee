@@ -1,14 +1,12 @@
 {
-  "name": "my-react-app",
+  "name": "client",
   "private": false,
   "version": "0.0.0",
-  "homepage": "https://MaryRinaldi.github.io/Yahtzee_Dicee/",
   "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "dev": "vite",
     "build": "vite build",
-    "deploy": "npm run build && gh-pages -d dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

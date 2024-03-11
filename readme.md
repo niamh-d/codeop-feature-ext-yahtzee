@@ -1,28 +1,114 @@
-## Setup
+# Yahtzee – Feature extension bootcamp project
 
-### Dependencies
+## What
 
-- Run `npm install` in project directory. This will install server-related dependencies such as `express`.
-- `cd client` and run `npm install`. This will install client dependencies (React).
+Fullstack bootcamp project. Feature extension of another student's MVP project.
 
-### Database Prep
+Original work by: Maria Rinaldi (GH: [@MaryRinaldi](https://github.com/MaryRinaldi)) – [link to repo](https://github.com/MaryRinaldi/Yahtzee_Dicee).
 
-- Access the MySQL interface in your terminal by running `mysql -u root -p`
-- Create a new database `CREATE DATABASE NAME;`
-- Add a `.env` file to the project folder of this repository containing the MySQL authentication information for MySQL user. For example:
+Yahtzee game.
 
-```bash
-  DB_HOST=localhost
-  DB_USER=root
-  DB_NAME=
-  DB_PASS=YOURPASSWORD
+## Features added
+
+_TBD_
+
+## Running
+
+### Start expresss server
+
+1. In the terminal run:
+
 ```
-- Use db: `SHOW DATABASE NAME;` +  `USE DATABASE NAME;`
-- Run `npm run migrate` in the project folder of this repository, in a new terminal window. This will create a table called 'students' in your database.
+npm start
+```
 
-- In your MySQL console, you can run `show tables ;` and then `describe table;` to see the structure of the table.
+Don't kill it; let it run.
 
-### Development
+### Start frontend dev server
 
-- Run `npm start` in project directory to start the Express server on port 4000
-- In another terminal, do `cd client` and run `npm run dev` to start the client in development mode with hot reloading in port 5173.
+2. In a fresh, second terminal run:
+
+```
+cd client
+npm run dev
+```
+
+Don't kill it; let it run.
+
+### Run mysql
+
+3. In a third terminal run:
+
+```
+mysql -u root -p
+<enter your mysql password>
+USE dice;
+```
+
+Or if you already have set up mysql so you skip entering password:
+
+```
+mysql
+USE dice;
+```
+
+Fin!
+
+## Setting up project
+
+### Open project in VSCode
+
+1. Once the project is on your machine, drag the folder and drop it in VSCode to open it or run the [shortcut](https://www.freecodecamp.org/news/how-to-open-visual-studio-code-from-your-terminal/):
+
+```
+cd <path to project directory>
+code .
+```
+
+### Add DOT env with your DB password
+
+2. Create a .env file at the top level of your project with the following (all other details are already in the model/database.js file)
+
+```
+DB_PASS=<your password>
+DB_USER=<your username>
+```
+
+### Create DB
+
+3. Open up the terminal in VSCode and run
+
+```
+mysql -u root -p
+<enter your mysql password>
+CREATE DATABASE dice;
+```
+
+Or if you already have set up mysql so you skip entering password:
+
+```
+mysql
+CREATE DATABASE dice;
+```
+
+You can kill terminal.
+
+## Installation steps
+
+### Install backend packages and set up db tables and populate with initial data
+
+1. In the terminal run:
+
+```
+npm i
+npm run migrate
+```
+
+### Install frontend packages
+
+2. In the same terminal run:
+
+```
+cd client
+npm i
+```

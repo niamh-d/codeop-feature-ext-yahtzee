@@ -1,7 +1,8 @@
 {
-  "name": "my-express-app",
+  "name": "Yahtzee Dice Roller Game",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
+  "authors": "Maria Rinaldi (original project) and Niamh Doyle (additional features)",
   "scripts": {
     "start": "nodemon ./bin/www",
     "migrate": "node model/database.js"
@@ -12,7 +13,6 @@
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "gh-pages": "^6.1.1",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "^3.1.0"

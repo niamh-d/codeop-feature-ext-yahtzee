@@ -4,7 +4,7 @@ const mysql = require("mysql");
 module.exports = async function db(query, values = []) {
   const results = {
     data: [],
-    error: null
+    error: null,
   };
 
   let promise = await new Promise((resolve, reject) => {
@@ -15,13 +15,13 @@ module.exports = async function db(query, values = []) {
 
     const con = mysql.createConnection({
       host: DB_HOST || "127.0.0.1",
-      user: DB_USER || "root",
+      user: DB_USER,
       password: DB_PASS,
-      database: DB_NAME || "",
-      multipleStatements: true
+      database: DB_NAME || "dice",
+      multipleStatements: true,
     });
 
-    con.connect(function(err) {
+    con.connect(function (err) {
       if (err) {
         results.error = err;
         console.log("Error connecting to database:", err);
@@ -31,7 +31,7 @@ module.exports = async function db(query, values = []) {
 
       console.log("Connected to database!");
 
-      con.query(query, values, function(err, result) {
+      con.query(query, values, function (err, result) {
         if (err) {
           results.error = err;
           console.log("Error executing query:", err);
@@ -49,7 +49,7 @@ module.exports = async function db(query, values = []) {
             return;
           }
         } else if (result[0].constructor.name == "RowDataPacket") {
-          result.forEach(row => results.data.push(row));
+          result.forEach((row) => results.data.push(row));
         } else if (result[0].constructor.name == "OkPacket") {
           results.data.push(result[0]);
         }
