@@ -8,9 +8,41 @@ Original work by: Maria Rinaldi (GH: [@MaryRinaldi](https://github.com/MaryRinal
 
 Yahtzee game.
 
-## Features added
+## Scenario
 
-_TBD_
+I have been asked by my PM to build upon code already written by a collegue.
+
+Criteria/Constraints:
+
+- Maintain aesthetic as much as possible while adding required features and with (below) design inspiration in mind
+- Style with vanilla CSS (no external libraries or frameworks)
+
+### Required features
+
+- Full Yahtzee game logic
+- Scoreboard
+- Saving user scores to backend
+
+If time allows:
+
+- Authentication
+- Permit two players to play against each other in same session
+
+## Design
+
+### Original page layout
+
+![Original page layout](imgs/original-version.png)
+
+### Target page layout
+
+Layout example with scoreboard from [link](https://cardgames.io/yahtzee/).
+
+![Target page layout example](imgs/layout-example.png)
+
+### Example of Scorboard
+
+![Example of Yahtzee scoreboard](imgs/scoreboard.png)
 
 ## Running
 
@@ -112,3 +144,5 @@ npm run migrate
 cd client
 npm i
 ```
+
+_This is a student project that was created at [CodeOp](http://codeop.tech), a full stack development bootcamp in Barcelona._
