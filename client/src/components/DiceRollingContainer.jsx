@@ -1,7 +1,9 @@
 import DiceRollBox from "./DiceRollBox";
-import KeptDiceBox from "./KeptDiceBox";
+import HeldDiceBox from "./HeldDiceBox";
 
 import { useGame } from "../contexts/GameContext";
+
+import styles from "./DiceRollingContainer.module.css";
 
 const DiceRollingContainer = () => {
   const { rollDice } = useGame();
@@ -11,9 +13,11 @@ const DiceRollingContainer = () => {
       <button className="btn__roll" onClick={rollDice}>
         Roll dice
       </button>
-      <h2>Your roll</h2>
-      <DiceRollBox />
-      <KeptDiceBox />
+      <div className={styles.container}>
+        <h2>Your roll</h2>
+        <DiceRollBox />
+        <HeldDiceBox />
+      </div>
     </div>
   );
 };
