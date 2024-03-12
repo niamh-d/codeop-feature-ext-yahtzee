@@ -1,25 +1,16 @@
-import React from "react";
+import Dice from "./Dice";
+import { useGame } from "../contexts/GameContext";
 
 import styles from "./DiceRollBox.module.css";
 
 const DiceBox = () => {
+  const { rolledDice } = useGame();
+
   return (
     <div className={styles["dice-row"]}>
-      <div>
-        <span>die 1</span>
-      </div>
-      <div>
-        <span>die 2</span>
-      </div>
-      <div>
-        <span>die 3</span>
-      </div>
-      <div>
-        <span>die 4</span>
-      </div>
-      <div>
-        <span>die 5</span>
-      </div>
+      {rolledDice.map((num, i) => (
+        <Dice key={i} num={num} />
+      ))}
     </div>
   );
 };
