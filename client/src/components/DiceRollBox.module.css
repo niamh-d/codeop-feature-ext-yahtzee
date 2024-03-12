@@ -1,4 +1,4 @@
-.dice-box {
+.dice-row {
   display: flex;
   gap: 2rem;
 }
