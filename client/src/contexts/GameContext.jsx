@@ -34,7 +34,7 @@ function reducer(state, action) {
 }
 
 function GameProvider({ children }) {
-  const [{ rolledDice, heldDice }, dispatch] = useReducer(
+  const [{ rolledDice, heldDice, scoringCells }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -97,7 +97,14 @@ function GameProvider({ children }) {
 
   return (
     <GameContext.Provider
-      value={{ rollDice, holdDie, returnDie, rolledDice, heldDice }}
+      value={{
+        rollDice,
+        holdDie,
+        returnDie,
+        rolledDice,
+        heldDice,
+        scoringCells,
+      }}
     >
       {children}
     </GameContext.Provider>

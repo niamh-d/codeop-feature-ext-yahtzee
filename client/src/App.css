@@ -65,3 +65,13 @@ span {
   grid-template-columns: repeat(2, 1fr);
   gap: 5rem;
 }
+
+th {
+  font-weight: 600;
+}
+
+th,
+td {
+  font-size: 2rem;
+  padding: 1rem;
+}
