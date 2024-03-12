@@ -1,42 +1,30 @@
 import { useGame } from "../contexts/GameContext";
 
-const ScoreCard = () => {
-  const { scoringCells } = useGame();
+import ScoringRow from "./ScoringRow";
 
-  const { aces, twos, threes, fours, fives, sixes } = scoringCells;
+const ScoreCard = () => {
+  const { scoringCells, scoreCriterionCell } = useGame();
 
   return (
     <div>
       <h2>ScoreCard</h2>
       <table>
-        <tr>
-          <th>Condition</th>
-          <th>Score</th>
-        </tr>
-        <tr>
-          <td>Aces</td>
-          <td>{aces ? aces : ""}</td>
-        </tr>
-        <tr>
-          <td>Twos</td>
-          <td>{twos ? twos : ""}</td>
-        </tr>
-        <tr>
-          <td>Threes</td>
-          <td>{threes ? threes : ""}</td>
-        </tr>
-        <tr>
-          <td>Fours</td>
-          <td>{fours ? fours : ""}</td>
-        </tr>
-        <tr>
-          <td>Fives</td>
-          <td>{fives ? fives : ""}</td>
-        </tr>
-        <tr>
-          <td>Sixes</td>
-          <td>{sixes ? sixes : ""}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Condition</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(scoringCells).map((criterion) => (
+            <ScoringRow
+              key={criterion}
+              criterionName={criterion}
+              score={scoringCells[criterion]}
+              handler={scoreCriterionCell}
+            />
+          ))}
+        </tbody>
       </table>
     </div>
   );

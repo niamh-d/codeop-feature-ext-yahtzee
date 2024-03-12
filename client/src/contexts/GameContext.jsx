@@ -8,6 +8,8 @@ const GameContext = createContext();
 const initialState = {
   rolledDice: [],
   heldDice: [],
+  countRolled: 0,
+  criterionIsSelected: true,
   scoringCells: {
     aces: null,
     twos: null,
@@ -27,17 +29,22 @@ function reducer(state, action) {
     case "SET_HELD_DICE":
       return { ...state, heldDice: action.payload };
     case "SET_SCORING_CELLS":
-      return { ...state, scoringCells: action.payload };
+      return {
+        ...state,
+        scoringCells: { ...initialState.scoringCells, ...action.payload },
+      };
+    case "TOGGLE_CRITERIA_SELECTED":
+      return { ...state, criterionIsSelected: !state.criterionIsSelected };
     default:
       throw new Error("Unknown action type");
   }
 }
 
 function GameProvider({ children }) {
-  const [{ rolledDice, heldDice, scoringCells }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    { rolledDice, heldDice, scoringCells, criterionIsSelected },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   useEffect(() => {
     calculateQualifyingScoringCell(rolledDice);
@@ -62,15 +69,24 @@ function GameProvider({ children }) {
     conditionNames.forEach((condition, i) => {
       const length = filterDiceAndCalculateLength(rolledDice, i + 1);
 
-      if (length) scores[`${condition}`] = length * (i + 1);
+      if (length) scores[condition] = length * (i + 1);
     });
 
     dispatch({ type: "SET_SCORING_CELLS", payload: scores });
   }
 
+  function scoreCriterionCell(criterionName, score) {
+    const cells = { ...initialState.scoringCells };
+    cells[criterionName] = score;
+
+    dispatch({ type: "SET_SCORING_CELLS", payload: cells });
+    dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
+  }
+
   function rollDice() {
     const diceArr = [...Array(5)].map((_) => randInt());
     dispatch({ type: "SET_ROLLED_DICE", payload: diceArr });
+    dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
   }
 
   function setDice(rolled, held) {
@@ -101,9 +117,11 @@ function GameProvider({ children }) {
         rollDice,
         holdDie,
         returnDie,
+        scoreCriterionCell,
         rolledDice,
         heldDice,
         scoringCells,
+        criterionIsSelected,
       }}
     >
       {children}

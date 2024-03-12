@@ -6,13 +6,21 @@ import { useGame } from "../contexts/GameContext";
 import styles from "./DiceRollingContainer.module.css";
 
 const DiceRollingContainer = () => {
-  const { rollDice } = useGame();
+  const { rollDice, criterionIsSelected } = useGame();
 
   return (
     <div>
-      <button className="btn__roll" onClick={rollDice}>
-        Roll dice
-      </button>
+      {criterionIsSelected && (
+        <button className="btn__roll" onClick={rollDice}>
+          Roll dice
+        </button>
+      )}
+      {!criterionIsSelected && (
+        <button disabled className="btn__roll">
+          Select a scoring criteria
+        </button>
+      )}
+
       <div className={styles.container}>
         <h2>Your roll</h2>
         <DiceRollBox />
