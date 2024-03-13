@@ -5,8 +5,13 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 const GameContext = createContext();
 
+const TOTAL_NUM_DICE = 5;
+const NUM_ROUNDS = 13;
+const NUM_ROLLS = 3;
+
 const initialState = {
   rolledDice: [],
+  diceToScore: [],
   heldDice: [],
   countRolled: 0,
   criterionIsSelected: true,
@@ -28,6 +33,8 @@ function reducer(state, action) {
       return { ...state, rolledDice: action.payload };
     case "SET_HELD_DICE":
       return { ...state, heldDice: action.payload };
+    case "SET_SCORED_DICE":
+      return { ...state, diceToScore: action.payload };
     case "SET_SCORING_CELLS":
       return {
         ...state,
@@ -84,8 +91,11 @@ function GameProvider({ children }) {
   }
 
   function rollDice() {
-    const diceArr = [...Array(5)].map((_) => randInt());
-    dispatch({ type: "SET_ROLLED_DICE", payload: diceArr });
+    const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
+    const rolledDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
+    const diceToScore = [...heldDice, ...rolledDice];
+    dispatch({ type: "SET_ROLLED_DICE", payload: rolledDice });
+    dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
   }
 
