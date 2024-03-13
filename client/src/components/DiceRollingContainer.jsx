@@ -24,6 +24,7 @@ const DiceRollingContainer = () => {
       <div className={styles.container}>
         <h2>Your roll</h2>
         <DiceRollBox />
+        <h2>Held dice</h2>
         <HeldDiceBox />
       </div>
     </div>

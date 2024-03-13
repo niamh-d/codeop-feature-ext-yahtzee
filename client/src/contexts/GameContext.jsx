@@ -16,6 +16,7 @@ const initialState = {
   countRolled: 0,
   countRound: 0,
   criterionIsSelected: true,
+  scoredConditions: [],
   scoringCells: {
     aces: null,
     twos: null,
@@ -36,16 +37,28 @@ function reducer(state, action) {
       return { ...state, heldDice: action.payload };
     case "SET_SCORED_DICE":
       return { ...state, diceToScore: action.payload };
+    case "SET_SCORED_CONDITIONS":
+      return {
+        ...state,
+        scoredConditions: [...state.scoredConditions, action.payload],
+      };
     case "SET_SCORING_CELLS":
       return {
         ...state,
-        scoringCells: { ...initialState.scoringCells, ...action.payload },
+        scoringCells: { ...state.scoringCells, ...action.payload },
       };
     case "INCREMENT_COUNT_ROLL": {
       return { ...state, countRolled: state.countRolled + 1 };
     }
-    case "TOGGLE_CRITERIA_SELECTED":
-      return { ...state, criterionIsSelected: !state.criterionIsSelected };
+    case "SET_CRITERION_NOT_SELECTED":
+      return { ...state, criterionIsSelected: false };
+    case "SCORING_CRITERION_IS_SELECTED":
+      return {
+        ...state,
+        countRolled: 0,
+        countRound: state.countRound + 1,
+        criterionIsSelected: true,
+      };
     default:
       throw new Error("Unknown action type");
   }
@@ -58,6 +71,7 @@ function GameProvider({ children }) {
       heldDice,
       diceToScore,
       scoringCells,
+      scoredConditions,
       criterionIsSelected,
       countRolled,
     },
@@ -75,14 +89,9 @@ function GameProvider({ children }) {
 
     const scores = {};
 
-    const conditionNames = [
-      "aces",
-      "twos",
-      "threes",
-      "fours",
-      "fives",
-      "sixes",
-    ];
+    const conditionNames = Object.keys(scoringCells).filter(
+      (condition) => !scoredConditions.includes(condition)
+    );
 
     conditionNames.forEach((condition, i) => {
       const length = filterDiceAndCalculateLength(rolledDice, i + 1);
@@ -93,26 +102,31 @@ function GameProvider({ children }) {
     dispatch({ type: "SET_SCORING_CELLS", payload: scores });
   }
 
-  function scoreCriterionCell(criterionName, score) {
-    const cells = { ...initialState.scoringCells };
-    cells[criterionName] = score;
+  function resetScoreCard(criterionName, score) {
+    const displayedCells = { ...initialState.scoringCells };
+    displayedCells[criterionName] = score;
 
-    dispatch({ type: "SET_SCORING_CELLS", payload: cells });
-    dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
+    dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
+  }
+
+  function scoreCriterionCell(criterionName, score) {
+    resetScoreCard(criterionName, score);
+    dispatch({ type: "SET_SCORED_CONDITIONS", payload: criterionName });
+    dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
   }
 
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
     const rolledDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
     const diceToScore = [...heldDice, ...rolledDice];
+
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "INCREMENT_COUNT_ROLL" });
-    if (countRolled === 2) dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
+    if (countRolled === 2) dispatch({ type: "SET_CRITERION_NOT_SELECTED" });
   }
 
   function setDice(rolled, held) {
-    console.log(rolled, held);
     dispatch({ type: "SET_ROLLED_DICE", payload: rolled });
     dispatch({ type: "SET_HELD_DICE", payload: held });
   }
