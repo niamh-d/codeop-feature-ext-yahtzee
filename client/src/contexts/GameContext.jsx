@@ -14,6 +14,7 @@ const initialState = {
   diceToScore: [],
   heldDice: [],
   countRolled: 0,
+  countRound: 0,
   criterionIsSelected: true,
   scoringCells: {
     aces: null,
@@ -40,6 +41,9 @@ function reducer(state, action) {
         ...state,
         scoringCells: { ...initialState.scoringCells, ...action.payload },
       };
+    case "INCREMENT_COUNT_ROLL": {
+      return { ...state, countRolled: state.countRolled + 1 };
+    }
     case "TOGGLE_CRITERIA_SELECTED":
       return { ...state, criterionIsSelected: !state.criterionIsSelected };
     default:
@@ -49,13 +53,20 @@ function reducer(state, action) {
 
 function GameProvider({ children }) {
   const [
-    { rolledDice, heldDice, scoringCells, criterionIsSelected },
+    {
+      rolledDice,
+      heldDice,
+      diceToScore,
+      scoringCells,
+      criterionIsSelected,
+      countRolled,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    calculateQualifyingScoringCell(rolledDice);
-  }, [rolledDice]);
+    calculateQualifyingScoringCell(diceToScore);
+  }, [diceToScore]);
 
   function calculateQualifyingScoringCell(rolledDice) {
     const filterDiceAndCalculateLength = (dice, val) => {
@@ -96,7 +107,8 @@ function GameProvider({ children }) {
     const diceToScore = [...heldDice, ...rolledDice];
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
-    dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
+    dispatch({ type: "INCREMENT_COUNT_ROLL" });
+    if (countRolled === 2) dispatch({ type: "TOGGLE_CRITERIA_SELECTED" });
   }
 
   function setDice(rolled, held) {
@@ -108,7 +120,7 @@ function GameProvider({ children }) {
   function holdDie(index) {
     const die = rolledDice[index];
     const held = [...heldDice, die];
-    const rolled = [...rolledDice].filter((num, i) => i !== index);
+    const rolled = [...rolledDice].filter((_, i) => i !== index);
 
     setDice(rolled, held);
   }
@@ -116,7 +128,7 @@ function GameProvider({ children }) {
   function returnDie(index) {
     const die = heldDice[index];
     const rolled = [...rolledDice, die];
-    const held = [...heldDice].filter((num, i) => i !== index);
+    const held = [...heldDice].filter((_, i) => i !== index);
 
     setDice(rolled, held);
   }
