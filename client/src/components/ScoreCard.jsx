@@ -16,11 +16,11 @@ const ScoreCard = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(scoringCells).map((criterion) => (
+          {Object.keys(scoringCells.upper).map((criterion) => (
             <ScoringRow
               key={criterion}
               criterionName={criterion}
-              score={scoringCells[criterion]}
+              score={scoringCells.upper[criterion]}
               handler={scoreCriterionCell}
             />
           ))}

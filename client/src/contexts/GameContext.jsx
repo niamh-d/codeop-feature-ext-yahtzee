@@ -18,12 +18,19 @@ const initialState = {
   criterionIsSelected: true,
   scoredConditions: [],
   scoringCells: {
-    aces: null,
-    twos: null,
-    threes: null,
-    fours: null,
-    fives: null,
-    sixes: null,
+    upper: {
+      aces: null,
+      twos: null,
+      threes: null,
+      fours: null,
+      fives: null,
+      sixes: null,
+    },
+    lower: {
+      threeKind: null,
+      fourKind: null,
+      fullHouse: null,
+    },
   },
 };
 
@@ -87,17 +94,40 @@ function GameProvider({ children }) {
       return dice.filter((num) => num === val).length;
     };
 
-    const scores = {};
+    const scores = { ...initialState.scoringCells };
 
-    const conditionNames = Object.keys(scoringCells).filter(
+    const conditionNamesUpper = Object.keys(scoringCells.upper).filter(
       (condition) => !scoredConditions.includes(condition)
     );
 
-    conditionNames.forEach((condition, i) => {
+    conditionNamesUpper.forEach((condition, i) => {
       const length = filterDiceAndCalculateLength(rolledDice, i + 1);
 
-      if (length) scores[condition] = length * (i + 1);
+      if (length) scores.upper[condition] = length * (i + 1);
     });
+
+    const uniques = [...new Set(rolledDice)];
+    const uniquesLength = uniques.length;
+    const sumOfRoll = rolledDice.reduce((acc, curr) => acc + curr, 0);
+
+    if (uniquesLength === 3) {
+      uniques.forEach((unique) => {
+        const matchedLength = rolledDice.filter(
+          (dice) => dice === unique
+        ).length;
+        if (matchedLength === 3) scores.lower["threeKind"] = sumOfRoll;
+      });
+    }
+
+    if (uniquesLength === 2) {
+      uniques.forEach((unique) => {
+        const matchedLength = rolledDice.filter(
+          (dice) => dice === unique
+        ).length;
+        if (matchedLength === 4) scores.lower["fourKind"] = sumOfRoll;
+        if (matchedLength === 3) scores.lower["fullHouse"] = 25;
+      });
+    }
 
     dispatch({ type: "SET_SCORING_CELLS", payload: scores });
   }
