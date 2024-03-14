@@ -30,6 +30,10 @@ const initialState = {
       threeKind: null,
       fourKind: null,
       fullHouse: null,
+      smallStraight: null,
+      largeStraight: null,
+      yahtzee: null,
+      chance: null,
     },
   },
 };
@@ -110,6 +114,10 @@ function GameProvider({ children }) {
     const uniquesLength = uniques.length;
     const sumOfRoll = rolledDice.reduce((acc, curr) => acc + curr, 0);
 
+    scores.lower["chance"] = sumOfRoll;
+
+    if (uniquesLength === 1) scores.lower["yahtzee"] = 50;
+
     if (uniquesLength === 3) {
       uniques.forEach((unique) => {
         const matchedLength = rolledDice.filter(
@@ -128,6 +136,22 @@ function GameProvider({ children }) {
         if (matchedLength === 3) scores.lower["fullHouse"] = 25;
       });
     }
+
+    const sortedRolledDiceStr = rolledDice.sort().join(" ");
+
+    console.log(sortedRolledDiceStr);
+
+    if (
+      sortedRolledDiceStr.includes("1 2 3 4 5") ||
+      sortedRolledDiceStr.includes("2 3 4 5 6")
+    )
+      scores.lower["largeStraight"] = 40;
+    if (
+      sortedRolledDiceStr.includes("1 2 3 4") ||
+      sortedRolledDiceStr.includes("2 3 4 5") ||
+      sortedRolledDiceStr.includes("3 4 5 6")
+    )
+      scores.lower["smallStraight"] = 30;
 
     dispatch({ type: "SET_SCORING_CELLS", payload: scores });
   }
