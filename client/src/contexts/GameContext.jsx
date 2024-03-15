@@ -8,11 +8,12 @@ const GameContext = createContext();
 const TOTAL_NUM_DICE = 5;
 const NUM_ROUNDS = 13;
 const NUM_ROLLS = 3;
-const fixedScores = {
+const fixedScoresAndBonuses = {
   fullHouseValue: 25,
   smallStraightValue: 30,
   largeStraightValue: 40,
   yahtzeeValue: 50,
+  upperTotalBonus: 35,
 };
 
 const initialState = {
@@ -45,6 +46,11 @@ const initialState = {
       chance: null,
     },
   },
+  scoredTotalsAndBonuses: {
+    upperTotal: null,
+    upperBonus: null,
+    grandTotalUpper: null,
+  },
 };
 
 const randInt = () => Math.floor(Math.random() * 6) + 1;
@@ -57,16 +63,29 @@ function reducer(state, action) {
       return { ...state, heldDice: action.payload };
     case "SET_SCORED_DICE":
       return { ...state, diceToScore: action.payload };
-    case "SET_SCORED_CONDITIONS":
+    case "SET_SCORED_CONDITIONS_UPPER":
       return {
         ...state,
-        scoredConditions: [...state.scoredConditions, action.payload],
+        scoredConditions: {
+          ...state.scoredConditions,
+          upper: [...state.scoredConditions.upper, action.payload],
+        },
+      };
+    case "SET_SCORED_CONDITIONS_LOWER":
+      return {
+        ...state,
+        scoredConditions: {
+          ...state.scoredConditions,
+          lower: [...state.scoredConditions.lower, action.payload],
+        },
       };
     case "SET_SCORING_CELLS":
       return {
         ...state,
         scoringCells: { ...state.scoringCells, ...action.payload },
       };
+    case "SET_TOTALS_AND_BONSUSES_CELLS":
+      return { ...state, scoredTotalsAndBonuses: action.payload };
     case "INCREMENT_COUNT_ROLL": {
       return { ...state, countRolled: state.countRolled + 1 };
     }
@@ -92,6 +111,7 @@ function GameProvider({ children }) {
       diceToScore,
       scoringCells,
       scoredConditions,
+      scoredTotalsAndBonuses,
       criterionIsSelected,
       countRolled,
     },
@@ -102,19 +122,23 @@ function GameProvider({ children }) {
     calculateQualifyingScoringCells(diceToScore);
   }, [diceToScore]);
 
+  useEffect(() => {
+    scoreUpperTotal();
+  }, [scoredConditions]);
+
   const conditionNamesUpper = Object.keys(initialState.scoringCells.upper);
   const conditionNamesLower = Object.keys(initialState.scoringCells.lower);
   const scoredConditionNamesUpper = scoredConditions.upper.map(
     (condition) => condition.conditionName
   );
   const scoredConditionScoresUpper = scoredConditions.upper.map(
-    (condition) => condition.conditionName
+    (condition) => condition.score
   );
   const scoredConditionNamesLower = scoredConditions.lower.map(
     (condition) => condition.conditionName
   );
 
-  function upperOrLower(conditionName) {
+  function conditionIsOfUpperOrLowerType(conditionName) {
     if (conditionNamesUpper.includes(conditionName)) return "upper";
     if (conditionNamesLower.includes(conditionName)) return "lower";
   }
@@ -145,21 +169,21 @@ function GameProvider({ children }) {
       smallStraightValue,
       largeStraightValue,
       yahtzeeValue,
-    } = fixedScores;
+    } = fixedScoresAndBonuses;
 
     const scores = { ...initialState.scoringCells.lower };
     const uniques = [...new Set(dice)];
     const uniquesLength = uniques.length;
     const sumOfRoll = dice.reduce((acc, curr) => acc + curr, 0);
 
-    function checkForThreeOfAKind() {
+    function checkForThreeOfAKind(dice) {
       uniques.forEach((unique) => {
         const matchedLength = dice.filter((dice) => dice === unique).length;
         if (matchedLength === 3) scores["threeKind"] = sumOfRoll;
       });
     }
 
-    function checkFor4KindAndFullHouse() {
+    function checkFor4KindAndFullHouse(dice) {
       uniques.forEach((unique) => {
         const matchedLength = dice.filter((dice) => dice === unique).length;
         if (
@@ -175,7 +199,7 @@ function GameProvider({ children }) {
       });
     }
 
-    function checkForStraights() {
+    function checkForStraights(dice) {
       const sortedRolledDiceStr = dice.sort().join(" ");
 
       if (
@@ -196,10 +220,10 @@ function GameProvider({ children }) {
     if (!scoredConditionNamesLower.includes("chance"))
       scores["chance"] = sumOfRoll;
     if (uniquesLength === 1) scores["yahtzee"] = yahtzeeValue;
-    if (uniquesLength === 2) checkFor4KindAndFullHouse();
+    if (uniquesLength === 2) checkFor4KindAndFullHouse(dice);
     if (uniquesLength === 3 && !scoredConditionNamesLower.includes("threeKind"))
-      checkForThreeOfAKind();
-    checkForStraights();
+      checkForThreeOfAKind(dice);
+    checkForStraights(dice);
 
     return scores;
   }
@@ -216,9 +240,9 @@ function GameProvider({ children }) {
   function resetScoreCard(criterionName, score) {
     const displayedCells = { ...initialState.scoringCells };
 
-    if (upperOrLower(criterionName) === "upper")
+    if (conditionIsOfUpperOrLowerType(criterionName) === "upper")
       displayedCells.upper[criterionName] = score;
-    if (upperOrLower(criterionName) === "lower")
+    if (conditionIsOfUpperOrLowerType(criterionName) === "lower")
       displayedCells.lower[criterionName] = score;
 
     dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
@@ -226,15 +250,36 @@ function GameProvider({ children }) {
 
   function scoreCriterionCell(criterionName, score) {
     resetScoreCard(criterionName, score);
+
+    const upperOrLower =
+      conditionIsOfUpperOrLowerType(criterionName).toUpperCase();
+
     dispatch({
-      type: "SET_SCORED_CONDITIONS",
+      type: `SET_SCORED_CONDITIONS_${upperOrLower}`,
       payload: { criterionName, score },
     });
+
     dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
   }
 
   function scoreUpperTotal() {
-    const combinedScores = [...Object.values(scoringCells.upper)];
+    console.log(scoredConditionScoresUpper.length);
+    if (!scoredConditionScoresUpper.length) return;
+
+    const upperTotal = scoredConditionScoresUpper.reduce(
+      (acc, curr) => acc + curr,
+      0
+    );
+    let upperBonus = null;
+    let grandTotalUpper = 0;
+    if (scoredTotalsAndBonuses.upperTotal >= 63)
+      upperBonus = fixedScoresAndBonuses.upperTotalBonus;
+    if (!upperBonus) grandTotalUpper = upperTotal;
+
+    dispatch({
+      type: "SET_TOTALS_AND_BONSUSES_CELLS",
+      payload: { upperTotal, upperBonus, grandTotalUpper },
+    });
   }
 
   function rollDice() {
@@ -279,6 +324,7 @@ function GameProvider({ children }) {
         rolledDice,
         heldDice,
         scoringCells,
+        scoredTotalsAndBonuses,
         criterionIsSelected,
       }}
     >

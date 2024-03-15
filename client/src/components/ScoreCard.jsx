@@ -3,7 +3,10 @@ import { useGame } from "../contexts/GameContext";
 import ScoringRow from "./ScoringRow";
 
 const ScoreCard = () => {
-  const { scoringCells, scoreCriterionCell } = useGame();
+  const { scoringCells, scoreCriterionCell, scoredTotalsAndBonuses } =
+    useGame();
+
+  const { upperTotal, upperBonus, grandTotalUpper } = scoredTotalsAndBonuses;
 
   return (
     <div>
@@ -27,15 +30,15 @@ const ScoreCard = () => {
           ))}
           <tr>
             <td>Total</td>
-            <td>Total</td>
+            <td>{upperTotal ? upperTotal : ""}</td>
           </tr>
           <tr>
             <td>Bonus</td>
-            <td>Bonus</td>
+            <td>{upperBonus ? upperBonus : ""}</td>
           </tr>
           <tr>
             <td>Upper Total</td>
-            <td>Upper Total</td>
+            <td>{grandTotalUpper ? grandTotalUpper : ""}</td>
           </tr>
         </tbody>
       </table>
