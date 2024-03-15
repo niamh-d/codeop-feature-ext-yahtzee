@@ -5,7 +5,7 @@ export default function reducer(state, action) {
     case "SET_HELD_DICE":
       return { ...state, heldDice: action.payload };
     case "SET_SCORED_DICE":
-      return { ...state, diceToScore: action.payload };
+      return { ...state, isScoreable: true, diceToScore: action.payload };
     case "SET_SCORED_CONDITIONS_UPPER":
       return {
         ...state,
@@ -39,7 +39,7 @@ export default function reducer(state, action) {
       return { ...state, countRolled: state.countRolled + 1 };
     }
     case "SET_CRITERION_NOT_SELECTED":
-      return { ...state, criterionIsSelected: false };
+      return { ...state, isScoreable: true, criterionIsSelected: false };
     case "SCORING_CRITERION_IS_SELECTED":
       return {
         ...state,
@@ -49,6 +49,7 @@ export default function reducer(state, action) {
         rolledDice: [],
         heldDice: [],
         diceToScore: [],
+        isScoreable: false,
       };
     case "END_GAME":
       return { ...state, gameIsEnded: true };

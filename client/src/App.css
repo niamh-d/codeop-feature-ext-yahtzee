@@ -75,3 +75,13 @@ td {
   font-size: 2rem;
   padding: 1rem;
 }
+
+.scoreable {
+  cursor: pointer;
+}
+
+.scored {
+  background-color: #444;
+  color: aliceblue;
+  font-weight: 600;
+}

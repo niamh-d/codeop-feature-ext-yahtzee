@@ -32,6 +32,7 @@ function GameProvider({ children }) {
       scoredTotalsAndBonuses,
       criterionIsSelected,
       countRolled,
+      isScoreable,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -217,8 +218,6 @@ function GameProvider({ children }) {
     function checkForStraights(dice) {
       const sortedRolledDiceStr = renderSortedRolledDiceStr(dice);
 
-      console.log(sortedRolledDiceStr);
-
       if (
         (sortedRolledDiceStr.includes("1 2 3 4 5") ||
           sortedRolledDiceStr.includes("2 3 4 5 6")) &&
@@ -231,7 +230,6 @@ function GameProvider({ children }) {
           sortedRolledDiceStr.includes("3 4 5 6")) &&
         !scoredConditionNamesLower.includes("smallStraight")
       ) {
-        console.log("hello");
         scores["smallStraight"] = smallStraightValue;
       }
     }
@@ -315,6 +313,7 @@ function GameProvider({ children }) {
         scoredTotalsAndBonuses,
         criterionIsSelected,
         gameIsEnded,
+        isScoreable,
       }}
     >
       {children}

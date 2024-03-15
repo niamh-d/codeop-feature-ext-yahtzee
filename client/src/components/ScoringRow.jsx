@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ScoringRow = ({ criterionName, score, handler }) => {
+const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
+  const [isScored, setIsScored] = useState(false);
+
   const criterionTransformString = (criterionName) => {
     switch (criterionName) {
       case "threeKind":
@@ -22,11 +24,24 @@ const ScoringRow = ({ criterionName, score, handler }) => {
     }
   };
 
+  const onClickHandler = (e) => {
+    if (!isScoreable || isScored) return;
+
+    if (!score) score = 0;
+
+    handler(criterionName, score);
+
+    setIsScored(true);
+  };
+
   return (
     <tr>
       <td>{criterionTransformString(criterionName)}</td>
-      <td onClick={() => handler(criterionName, score)}>
-        {score ? score : ""}
+      <td
+        onClick={onClickHandler}
+        className={isScored ? "scored" : isScoreable ? "scoreable" : null}
+      >
+        {score === 0 ? "0" : score ? score : null}
       </td>
     </tr>
   );

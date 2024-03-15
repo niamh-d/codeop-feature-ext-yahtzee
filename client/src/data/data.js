@@ -4,6 +4,7 @@ export const NUM_ROLLS = 3;
 
 export const initialState = {
   gameIsEnded: false,
+  isScoreable: false,
   rolledDice: [],
   diceToScore: [],
   heldDice: [],

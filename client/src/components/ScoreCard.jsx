@@ -3,8 +3,12 @@ import { useGame } from "../contexts/GameContext";
 import ScoringRow from "./ScoringRow";
 
 const ScoreCard = () => {
-  const { scoringCells, scoreCriterionCell, scoredTotalsAndBonuses } =
-    useGame();
+  const {
+    scoringCells,
+    scoreCriterionCell,
+    scoredTotalsAndBonuses,
+    isScoreable,
+  } = useGame();
 
   const {
     upperTotal,
@@ -32,6 +36,7 @@ const ScoreCard = () => {
               criterionName={criterion}
               score={scoringCells.upper[criterion]}
               handler={scoreCriterionCell}
+              isScoreable={isScoreable}
             />
           ))}
           <tr>
@@ -63,6 +68,7 @@ const ScoreCard = () => {
               criterionName={criterion}
               score={scoringCells.lower[criterion]}
               handler={scoreCriterionCell}
+              isScoreable={isScoreable}
             />
           ))}
           <tr>
