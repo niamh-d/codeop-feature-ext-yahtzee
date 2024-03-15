@@ -41,6 +41,8 @@ export default function reducer(state, action) {
         countRound: state.countRound + 1,
         criterionIsSelected: true,
       };
+    case "END_GAME":
+      return { ...state, gameIsEnded: true };
     default:
       throw new Error("Unknown action type");
   }

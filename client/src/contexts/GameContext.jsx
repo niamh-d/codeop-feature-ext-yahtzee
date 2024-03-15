@@ -97,6 +97,12 @@ function GameProvider({ children }) {
     setDice(rolled, held);
   }
 
+  // END GAME
+
+  function endGameEarly() {
+    dispatch({ type: "END_GAME" });
+  }
+
   // END GAME SCORING
 
   useEffect(() => {
@@ -284,16 +290,17 @@ function GameProvider({ children }) {
   return (
     <GameContext.Provider
       value={{
-        gameIsEnded,
         rollDice,
         holdDie,
         returnDie,
         scoreCriterionCell,
+        endGameEarly,
         rolledDice,
         heldDice,
         scoringCells,
         scoredTotalsAndBonuses,
         criterionIsSelected,
+        gameIsEnded,
       }}
     >
       {children}
