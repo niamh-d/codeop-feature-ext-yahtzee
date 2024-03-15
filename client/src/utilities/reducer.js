@@ -28,7 +28,13 @@ export default function reducer(state, action) {
         scoringCells: { ...state.scoringCells, ...action.payload },
       };
     case "SET_TOTALS_AND_BONSUSES_CELLS":
-      return { ...state, scoredTotalsAndBonuses: action.payload };
+      return {
+        ...state,
+        scoredTotalsAndBonuses: {
+          ...state.scoredTotalsAndBonuses,
+          ...action.payload,
+        },
+      };
     case "INCREMENT_COUNT_ROLL": {
       return { ...state, countRolled: state.countRolled + 1 };
     }
@@ -40,6 +46,9 @@ export default function reducer(state, action) {
         countRolled: 0,
         countRound: state.countRound + 1,
         criterionIsSelected: true,
+        rolledDice: [],
+        heldDice: [],
+        diceToScore: [],
       };
     case "END_GAME":
       return { ...state, gameIsEnded: true };

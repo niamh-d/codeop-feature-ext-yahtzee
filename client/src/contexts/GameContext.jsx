@@ -106,21 +106,31 @@ function GameProvider({ children }) {
   // END GAME SCORING
 
   useEffect(() => {
-    if (!scoredConditionNamesLower.length && !scoredConditionNamesUpper) return;
-    scoreUpperTotalsAndBonuses();
-    scoreLowerTotalsAndBonuses();
+    if (!scoredConditionNamesLower.length && !scoredConditionNamesUpper.length)
+      return;
+    scoreTotalsAndBonuses();
   }, [gameIsEnded]);
 
   useEffect(() => {
-    if (
-      !scoredTotalsAndBonuses.grandTotalUpper &&
-      !scoredTotalsAndBonuses.lowerTotal
-    )
-      return;
-    scoreGameTotal();
+    const { grandTotalUpper, lowerTotal, grandTotalGame } =
+      scoredTotalsAndBonuses;
+    if (!grandTotalUpper && !lowerTotal) return;
+    if (grandTotalGame) return;
+
+    scoreGameTotal(grandTotalUpper, lowerTotal);
   }, [scoredTotalsAndBonuses]);
 
-  function scoreGameTotal() {}
+  function scoreGameTotal(grandTotalUpper, lowerTotal) {
+    dispatch({
+      type: "SET_TOTALS_AND_BONSUSES_CELLS",
+      payload: { grandTotalGame: grandTotalUpper + lowerTotal },
+    });
+  }
+
+  function scoreTotalsAndBonuses() {
+    scoreUpperTotalsAndBonuses();
+    scoreLowerTotalsAndBonuses();
+  }
 
   function scoreUpperTotalsAndBonuses() {
     if (!scoredConditionScoresUpper.length) return;

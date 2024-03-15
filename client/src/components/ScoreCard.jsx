@@ -6,7 +6,13 @@ const ScoreCard = () => {
   const { scoringCells, scoreCriterionCell, scoredTotalsAndBonuses } =
     useGame();
 
-  const { upperTotal, upperBonus, grandTotalUpper } = scoredTotalsAndBonuses;
+  const {
+    upperTotal,
+    upperBonus,
+    grandTotalUpper,
+    lowerTotal,
+    grandTotalGame,
+  } = scoredTotalsAndBonuses;
 
   return (
     <div>
@@ -59,6 +65,14 @@ const ScoreCard = () => {
               handler={scoreCriterionCell}
             />
           ))}
+          <tr>
+            <td>Total</td>
+            <td>{lowerTotal ? lowerTotal : ""}</td>
+          </tr>
+          <tr>
+            <td>Game Grand Total</td>
+            <td>{grandTotalGame ? grandTotalGame : ""}</td>
+          </tr>
         </tbody>
       </table>
     </div>
