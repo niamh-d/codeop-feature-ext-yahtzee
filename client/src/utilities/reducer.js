@@ -27,6 +27,19 @@ export default function reducer(state, action) {
         ...state,
         scoringCells: { ...state.scoringCells, ...action.payload },
       };
+    case "YAHTZEE_IS_SCORED":
+      return {
+        ...state,
+        yahtzeeIsScored: true,
+      };
+    case "ADD_YAHTZEE_BONUS":
+      return {
+        ...state,
+        scoredTotalsAndBonuses: {
+          ...state.scoredTotalsAndBonuses,
+          yahtzeeBonusStars: action.payload,
+        },
+      };
     case "SET_TOTALS_AND_BONSUSES_CELLS":
       return {
         ...state,

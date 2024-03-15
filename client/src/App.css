@@ -80,6 +80,10 @@ td {
   cursor: pointer;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .scored {
   background-color: #444;
   color: aliceblue;

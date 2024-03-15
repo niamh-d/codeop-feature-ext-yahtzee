@@ -7,6 +7,7 @@ const ScoreCard = () => {
     scoringCells,
     scoreCriterionCell,
     scoredTotalsAndBonuses,
+    yahtzeeIsScored,
     isScoreable,
   } = useGame();
 
@@ -14,6 +15,7 @@ const ScoreCard = () => {
     upperTotal,
     upperBonus,
     grandTotalUpper,
+    yahtzeeBonus,
     lowerTotal,
     grandTotalGame,
   } = scoredTotalsAndBonuses;
@@ -69,8 +71,13 @@ const ScoreCard = () => {
               score={scoringCells.lower[criterion]}
               handler={scoreCriterionCell}
               isScoreable={isScoreable}
+              yahtzeeIsScored={yahtzeeIsScored}
             />
           ))}
+          <tr>
+            <td>Yahtzee bonus</td>
+            <td>{yahtzeeBonus ? yahtzeeBonus : ""}</td>
+          </tr>
           <tr>
             <td>Total</td>
             <td>{lowerTotal ? lowerTotal : ""}</td>

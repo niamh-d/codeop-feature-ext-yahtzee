@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
+const ScoringRow = ({
+  criterionName,
+  score,
+  handler,
+  isScoreable,
+  yahtzeeIsScored,
+}) => {
   const [isScored, setIsScored] = useState(false);
 
   const criterionTransformString = (criterionName) => {
@@ -24,7 +30,7 @@ const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
     }
   };
 
-  const onClickHandler = (e) => {
+  const onClickHandler = () => {
     if (!isScoreable || isScored) return;
 
     if (!score) score = 0;
@@ -34,15 +40,42 @@ const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
     setIsScored(true);
   };
 
+  const onClickHandlerYahtzee = () => {
+    if (!isScoreable) return;
+    if (score === 0) return;
+
+    handler(criterionName, score);
+  };
+
   return (
     <tr>
       <td>{criterionTransformString(criterionName)}</td>
-      <td
-        onClick={onClickHandler}
-        className={isScored ? "scored" : isScoreable ? "scoreable" : null}
-      >
-        {score === 0 ? "0" : score ? score : null}
-      </td>
+      {criterionName !== "yahtzee" && (
+        <td
+          onClick={onClickHandler}
+          className={isScored ? "scored" : isScoreable ? "scoreable" : null}
+        >
+          {score === 0 && criterionName !== "chance"
+            ? "0"
+            : score
+            ? score
+            : null}
+        </td>
+      )}
+      {criterionName === "yahtzee" && (
+        <td
+          onClick={onClickHandlerYahtzee}
+          className={
+            yahtzeeIsScored && isScoreable
+              ? "pointer scored"
+              : isScoreable
+              ? "scoreable"
+              : null
+          }
+        >
+          {score === 0 ? "0" : score ? score : null}
+        </td>
+      )}
     </tr>
   );
 };

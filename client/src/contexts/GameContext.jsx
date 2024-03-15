@@ -33,6 +33,7 @@ function GameProvider({ children }) {
       criterionIsSelected,
       countRolled,
       isScoreable,
+      yahtzeeIsScored,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -152,7 +153,12 @@ function GameProvider({ children }) {
   function scoreLowerTotalsAndBonuses() {
     if (!scoredConditionScoresLower.length) return;
 
-    const lowerTotal = sumUp(scoredConditionScoresLower);
+    const { yahtzeeBonus } = fixedScoresAndBonuses;
+    const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
+
+    const yahtzeeBonusValue = yahtzeeBonusStars.split("").length * yahtzeeBonus;
+
+    const lowerTotal = sumUp(scoredConditionScoresLower) + yahtzeeBonusValue;
 
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
@@ -248,7 +254,9 @@ function GameProvider({ children }) {
 
     if (!scoredConditionNamesLower.includes("chance"))
       scores["chance"] = sumOfRoll;
-    if (uniquesLength === 1) scores["yahtzee"] = yahtzeeValue;
+    if (uniquesLength === 1) {
+      scores["yahtzee"] = yahtzeeValue;
+    }
     if (uniquesLength === 2) {
       checkForFourOfAKind(dice);
       checkForFullHouse(dice);
@@ -286,6 +294,15 @@ function GameProvider({ children }) {
   }
 
   function scoreCriterionCell(criterionName, score) {
+    if (criterionName === "yahtzee") {
+      dispatch({ type: "YAHTZEE_IS_SCORED" });
+      const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
+      if (scoredConditionNamesLower.includes("yahtzee")) {
+        const bonus = yahtzeeBonusStars + "*";
+        dispatch({ type: "ADD_YAHTZEE_BONUS", payload: bonus });
+      }
+    }
+
     resetScoreCard(criterionName, score);
 
     const upperOrLower =
@@ -314,6 +331,7 @@ function GameProvider({ children }) {
         criterionIsSelected,
         gameIsEnded,
         isScoreable,
+        yahtzeeIsScored,
       }}
     >
       {children}

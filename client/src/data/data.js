@@ -3,6 +3,7 @@ export const NUM_ROUNDS = 13;
 export const NUM_ROLLS = 3;
 
 export const initialState = {
+  yahtzeeIsScored: false,
   gameIsEnded: false,
   isScoreable: false,
   rolledDice: [],
@@ -30,14 +31,15 @@ export const initialState = {
       fullHouse: null,
       smallStraight: null,
       largeStraight: null,
-      yahtzee: null,
       chance: null,
+      yahtzee: null,
     },
   },
   scoredTotalsAndBonuses: {
     upperTotal: null,
     upperBonus: null,
     grandTotalUpper: null,
+    yahtzeeBonusStars: "",
     lowerTotal: null,
     grandTotalGame: null,
   },
@@ -49,4 +51,5 @@ export const fixedScoresAndBonuses = {
   largeStraightValue: 40,
   yahtzeeValue: 50,
   upperTotalBonus: 35,
+  yahtzeeBonus: 100,
 };
