@@ -90,40 +90,54 @@ function GameProvider({ children }) {
   ] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    calculateQualifyingScoringCell(diceToScore);
+    calculateQualifyingScoringCells(diceToScore);
   }, [diceToScore]);
 
-  function calculateQualifyingScoringCell(rolledDice) {
-    const filterDiceAndCalculateLength = (dice, val) => {
-      return dice.filter((num) => num === val).length;
-    };
+  const conditionNamesUpper = Object.keys(initialState.scoringCells.upper);
+  const conditionNamesLower = Object.keys(initialState.scoringCells.lower);
 
-    const scores = { ...initialState.scoringCells };
+  function upperOrLower(conditionName) {
+    if (conditionNamesUpper.includes(conditionName)) return "upper";
+    if (conditionNamesLower.includes(conditionName)) return "lower";
+  }
 
-    const conditionNamesUpper = Object.keys(scoringCells.upper).filter(
+  function filterDiceAndCalculateLength(dice, val) {
+    return dice.filter((num) => num === val).length;
+  }
+
+  function calculateQualifyingScoringCellsUpper(dice) {
+    const scores = { ...initialState.scoringCells.upper };
+
+    const applicableConditionsUpper = conditionNamesUpper.filter(
       (condition) => !scoredConditions.includes(condition)
     );
 
-    conditionNamesUpper.forEach((condition, i) => {
-      const length = filterDiceAndCalculateLength(rolledDice, i + 1);
+    applicableConditionsUpper.forEach((condition, i) => {
+      const length = filterDiceAndCalculateLength(dice, i + 1);
 
-      if (length) scores.upper[condition] = length * (i + 1);
+      if (length) scores[condition] = length * (i + 1);
     });
 
-    const uniques = [...new Set(rolledDice)];
+    return scores;
+  }
+
+  function calculateQualifyingScoringCellsLower(dice) {
+    const scores = { ...initialState.scoringCells.lower };
+
+    const uniques = [...new Set(dice)];
     const uniquesLength = uniques.length;
-    const sumOfRoll = rolledDice.reduce((acc, curr) => acc + curr, 0);
+    const sumOfRoll = dice.reduce((acc, curr) => acc + curr, 0);
 
-    scores.lower["chance"] = sumOfRoll;
+    scores["chance"] = sumOfRoll;
 
-    if (uniquesLength === 1) scores.lower["yahtzee"] = 50;
+    if (uniquesLength === 1) scores["yahtzee"] = 50;
 
     if (uniquesLength === 3) {
       uniques.forEach((unique) => {
         const matchedLength = rolledDice.filter(
           (dice) => dice === unique
         ).length;
-        if (matchedLength === 3) scores.lower["threeKind"] = sumOfRoll;
+        if (matchedLength === 3) scores["threeKind"] = sumOfRoll;
       });
     }
 
@@ -132,14 +146,12 @@ function GameProvider({ children }) {
         const matchedLength = rolledDice.filter(
           (dice) => dice === unique
         ).length;
-        if (matchedLength === 4) scores.lower["fourKind"] = sumOfRoll;
-        if (matchedLength === 3) scores.lower["fullHouse"] = 25;
+        if (matchedLength === 4) scores["fourKind"] = sumOfRoll;
+        if (matchedLength === 3) scores["fullHouse"] = 25;
       });
     }
 
     const sortedRolledDiceStr = rolledDice.sort().join(" ");
-
-    console.log(sortedRolledDiceStr);
 
     if (
       sortedRolledDiceStr.includes("1 2 3 4 5") ||
@@ -151,14 +163,29 @@ function GameProvider({ children }) {
       sortedRolledDiceStr.includes("2 3 4 5") ||
       sortedRolledDiceStr.includes("3 4 5 6")
     )
-      scores.lower["smallStraight"] = 30;
+      scores["smallStraight"] = 30;
 
-    dispatch({ type: "SET_SCORING_CELLS", payload: scores });
+    return scores;
+  }
+
+  function calculateQualifyingScoringCells(dice) {
+    const upper = calculateQualifyingScoringCellsUpper(dice);
+    const lower = calculateQualifyingScoringCellsLower(dice);
+
+    const combinedScores = { upper, lower };
+
+    dispatch({ type: "SET_SCORING_CELLS", payload: combinedScores });
   }
 
   function resetScoreCard(criterionName, score) {
+    console.log(criterionName, score);
+
     const displayedCells = { ...initialState.scoringCells };
-    displayedCells[criterionName] = score;
+
+    if (upperOrLower(conditionName) === "upper")
+      displayedCells.upper[criterionName] = score;
+    if (upperOrLower(conditionName) === "lower")
+      displayedCells.lower[criterionName] = score;
 
     dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
   }
