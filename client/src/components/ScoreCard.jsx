@@ -25,6 +25,18 @@ const ScoreCard = () => {
               handler={scoreCriterionCell}
             />
           ))}
+          <tr>
+            <td>Total</td>
+            <td>Total</td>
+          </tr>
+          <tr>
+            <td>Bonus</td>
+            <td>Bonus</td>
+          </tr>
+          <tr>
+            <td>Upper Total</td>
+            <td>Upper Total</td>
+          </tr>
         </tbody>
       </table>
       <h3>Lower</h3>

@@ -22,7 +22,10 @@ const initialState = {
   countRolled: 0,
   countRound: 0,
   criterionIsSelected: true,
-  scoredConditions: [],
+  scoredConditions: {
+    upper: [],
+    lower: [],
+  },
   scoringCells: {
     upper: {
       aces: null,
@@ -101,6 +104,15 @@ function GameProvider({ children }) {
 
   const conditionNamesUpper = Object.keys(initialState.scoringCells.upper);
   const conditionNamesLower = Object.keys(initialState.scoringCells.lower);
+  const scoredConditionNamesUpper = scoredConditions.upper.map(
+    (condition) => condition.conditionName
+  );
+  const scoredConditionScoresUpper = scoredConditions.upper.map(
+    (condition) => condition.conditionName
+  );
+  const scoredConditionNamesLower = scoredConditions.lower.map(
+    (condition) => condition.conditionName
+  );
 
   function upperOrLower(conditionName) {
     if (conditionNamesUpper.includes(conditionName)) return "upper";
@@ -115,7 +127,7 @@ function GameProvider({ children }) {
     const scores = { ...initialState.scoringCells.upper };
 
     const applicableConditionsUpper = conditionNamesUpper.filter(
-      (condition) => !scoredConditions.includes(condition)
+      (condition) => !scoredConditionNamesUpper.includes(condition)
     );
 
     applicableConditionsUpper.forEach((condition, i) => {
@@ -150,8 +162,16 @@ function GameProvider({ children }) {
     function checkFor4KindAndFullHouse() {
       uniques.forEach((unique) => {
         const matchedLength = dice.filter((dice) => dice === unique).length;
-        if (matchedLength === 4) scores["fourKind"] = sumOfRoll;
-        if (matchedLength === 3) scores["fullHouse"] = fullHouseValue;
+        if (
+          matchedLength === 4 &&
+          !scoredConditionNamesLower.includes("fourKind")
+        )
+          scores["fourKind"] = sumOfRoll;
+        if (
+          matchedLength === 3 &&
+          !scoredConditionNamesLower.includes("fullHouse")
+        )
+          scores["fullHouse"] = fullHouseValue;
       });
     }
 
@@ -159,22 +179,26 @@ function GameProvider({ children }) {
       const sortedRolledDiceStr = dice.sort().join(" ");
 
       if (
-        sortedRolledDiceStr.includes("1 2 3 4 5") ||
-        sortedRolledDiceStr.includes("2 3 4 5 6")
+        (sortedRolledDiceStr.includes("1 2 3 4 5") ||
+          sortedRolledDiceStr.includes("2 3 4 5 6")) &&
+        !scoredConditionNamesLower.includes("largeStraight")
       )
         scores["largeStraight"] = largeStraightValue;
       if (
-        sortedRolledDiceStr.includes("1 2 3 4") ||
-        sortedRolledDiceStr.includes("2 3 4 5") ||
-        sortedRolledDiceStr.includes("3 4 5 6")
+        (sortedRolledDiceStr.includes("1 2 3 4") ||
+          sortedRolledDiceStr.includes("2 3 4 5") ||
+          sortedRolledDiceStr.includes("3 4 5 6")) &&
+        !scoredConditionNamesLower.includes("smallStraight")
       )
         scores["smallStraight"] = smallStraightValue;
     }
 
-    scores["chance"] = sumOfRoll;
+    if (!scoredConditionNamesLower.includes("chance"))
+      scores["chance"] = sumOfRoll;
     if (uniquesLength === 1) scores["yahtzee"] = yahtzeeValue;
     if (uniquesLength === 2) checkFor4KindAndFullHouse();
-    if (uniquesLength === 3) checkForThreeOfAKind();
+    if (uniquesLength === 3 && !scoredConditionNamesLower.includes("threeKind"))
+      checkForThreeOfAKind();
     checkForStraights();
 
     return scores;
@@ -190,8 +214,6 @@ function GameProvider({ children }) {
   }
 
   function resetScoreCard(criterionName, score) {
-    console.log(criterionName, score);
-
     const displayedCells = { ...initialState.scoringCells };
 
     if (upperOrLower(criterionName) === "upper")
@@ -204,8 +226,15 @@ function GameProvider({ children }) {
 
   function scoreCriterionCell(criterionName, score) {
     resetScoreCard(criterionName, score);
-    dispatch({ type: "SET_SCORED_CONDITIONS", payload: criterionName });
+    dispatch({
+      type: "SET_SCORED_CONDITIONS",
+      payload: { criterionName, score },
+    });
     dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
+  }
+
+  function scoreUpperTotal() {
+    const combinedScores = [...Object.values(scoringCells.upper)];
   }
 
   function rollDice() {
