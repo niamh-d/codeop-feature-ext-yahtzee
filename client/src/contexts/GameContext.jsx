@@ -8,6 +8,12 @@ const GameContext = createContext();
 const TOTAL_NUM_DICE = 5;
 const NUM_ROUNDS = 13;
 const NUM_ROLLS = 3;
+const fixedScores = {
+  fullHouseValue: 25,
+  smallStraightValue: 30,
+  largeStraightValue: 40,
+  yahtzeeValue: 50,
+};
 
 const initialState = {
   rolledDice: [],
@@ -122,48 +128,54 @@ function GameProvider({ children }) {
   }
 
   function calculateQualifyingScoringCellsLower(dice) {
-    const scores = { ...initialState.scoringCells.lower };
+    const {
+      fullHouseValue,
+      smallStraightValue,
+      largeStraightValue,
+      yahtzeeValue,
+    } = fixedScores;
 
+    const scores = { ...initialState.scoringCells.lower };
     const uniques = [...new Set(dice)];
     const uniquesLength = uniques.length;
     const sumOfRoll = dice.reduce((acc, curr) => acc + curr, 0);
 
-    scores["chance"] = sumOfRoll;
-
-    if (uniquesLength === 1) scores["yahtzee"] = 50;
-
-    if (uniquesLength === 3) {
+    function checkForThreeOfAKind() {
       uniques.forEach((unique) => {
-        const matchedLength = rolledDice.filter(
-          (dice) => dice === unique
-        ).length;
+        const matchedLength = dice.filter((dice) => dice === unique).length;
         if (matchedLength === 3) scores["threeKind"] = sumOfRoll;
       });
     }
 
-    if (uniquesLength === 2) {
+    function checkFor4KindAndFullHouse() {
       uniques.forEach((unique) => {
-        const matchedLength = rolledDice.filter(
-          (dice) => dice === unique
-        ).length;
+        const matchedLength = dice.filter((dice) => dice === unique).length;
         if (matchedLength === 4) scores["fourKind"] = sumOfRoll;
-        if (matchedLength === 3) scores["fullHouse"] = 25;
+        if (matchedLength === 3) scores["fullHouse"] = fullHouseValue;
       });
     }
 
-    const sortedRolledDiceStr = rolledDice.sort().join(" ");
+    function checkForStraights() {
+      const sortedRolledDiceStr = dice.sort().join(" ");
 
-    if (
-      sortedRolledDiceStr.includes("1 2 3 4 5") ||
-      sortedRolledDiceStr.includes("2 3 4 5 6")
-    )
-      scores.lower["largeStraight"] = 40;
-    if (
-      sortedRolledDiceStr.includes("1 2 3 4") ||
-      sortedRolledDiceStr.includes("2 3 4 5") ||
-      sortedRolledDiceStr.includes("3 4 5 6")
-    )
-      scores["smallStraight"] = 30;
+      if (
+        sortedRolledDiceStr.includes("1 2 3 4 5") ||
+        sortedRolledDiceStr.includes("2 3 4 5 6")
+      )
+        scores["largeStraight"] = largeStraightValue;
+      if (
+        sortedRolledDiceStr.includes("1 2 3 4") ||
+        sortedRolledDiceStr.includes("2 3 4 5") ||
+        sortedRolledDiceStr.includes("3 4 5 6")
+      )
+        scores["smallStraight"] = smallStraightValue;
+    }
+
+    scores["chance"] = sumOfRoll;
+    if (uniquesLength === 1) scores["yahtzee"] = yahtzeeValue;
+    if (uniquesLength === 2) checkFor4KindAndFullHouse();
+    if (uniquesLength === 3) checkForThreeOfAKind();
+    checkForStraights();
 
     return scores;
   }
@@ -182,9 +194,9 @@ function GameProvider({ children }) {
 
     const displayedCells = { ...initialState.scoringCells };
 
-    if (upperOrLower(conditionName) === "upper")
+    if (upperOrLower(criterionName) === "upper")
       displayedCells.upper[criterionName] = score;
-    if (upperOrLower(conditionName) === "lower")
+    if (upperOrLower(criterionName) === "lower")
       displayedCells.lower[criterionName] = score;
 
     dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
@@ -198,10 +210,10 @@ function GameProvider({ children }) {
 
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
-    const rolledDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
-    const diceToScore = [...heldDice, ...rolledDice];
+    const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
+    const diceToScore = [...heldDice, ...rolledNewDice];
 
-    dispatch({ type: "SET_ROLLED_DICE", payload: rolledDice });
+    dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "INCREMENT_COUNT_ROLL" });
     if (countRolled === 2) dispatch({ type: "SET_CRITERION_NOT_SELECTED" });
