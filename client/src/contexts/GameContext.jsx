@@ -17,6 +17,7 @@ const fixedScoresAndBonuses = {
 };
 
 const initialState = {
+  gameIsEnded: false,
   rolledDice: [],
   diceToScore: [],
   heldDice: [],
@@ -50,6 +51,8 @@ const initialState = {
     upperTotal: null,
     upperBonus: null,
     grandTotalUpper: null,
+    lowerTotal: null,
+    grandTotalGame: null,
   },
 };
 
@@ -106,6 +109,7 @@ function reducer(state, action) {
 function GameProvider({ children }) {
   const [
     {
+      gameIsEnded,
       rolledDice,
       heldDice,
       diceToScore,
@@ -122,21 +126,39 @@ function GameProvider({ children }) {
     calculateQualifyingScoringCells(diceToScore);
   }, [diceToScore]);
 
-  useEffect(() => {
-    scoreUpperTotal();
-  }, [scoredConditions]);
-
   const conditionNamesUpper = Object.keys(initialState.scoringCells.upper);
   const conditionNamesLower = Object.keys(initialState.scoringCells.lower);
-  const scoredConditionNamesUpper = scoredConditions.upper.map(
-    (condition) => condition.conditionName
+
+  function returnScoredConditionNamesAndScores(scoredConditions, nameOrScore) {
+    return scoredConditions.map((condition) => condition[nameOrScore]);
+  }
+
+  const scoredConditionNamesUpper = returnScoredConditionNamesAndScores(
+    scoredConditions.upper,
+    "conditionName"
   );
-  const scoredConditionScoresUpper = scoredConditions.upper.map(
-    (condition) => condition.score
+  const scoredConditionScoresUpper = returnScoredConditionNamesAndScores(
+    scoredConditions.upper,
+    "score"
   );
-  const scoredConditionNamesLower = scoredConditions.lower.map(
-    (condition) => condition.conditionName
+  const scoredConditionNamesLower = returnScoredConditionNamesAndScores(
+    scoredConditions.lower,
+    "conditionName"
   );
+  const scoredConditionScoresLower = returnScoredConditionNamesAndScores(
+    scoredConditions.lower,
+    "score"
+  );
+
+  useEffect(() => {
+    if (!scoredConditionNamesLower.length || !scoredConditionNamesUpper) return;
+    scoreGameTotal();
+  }, [gameIsEnded]);
+
+  useEffect(() => {
+    scoreUpperTotalsAndBonuses();
+    scoreLowerTotalsAndBonuses();
+  }, [gameIsEnded]);
 
   function conditionIsOfUpperOrLowerType(conditionName) {
     if (conditionNamesUpper.includes(conditionName)) return "upper";
@@ -163,6 +185,10 @@ function GameProvider({ children }) {
     return scores;
   }
 
+  function sumUp(nums) {
+    return nums.reduce((acc, curr) => acc + curr, 0);
+  }
+
   function calculateQualifyingScoringCellsLower(dice) {
     const {
       fullHouseValue,
@@ -174,7 +200,7 @@ function GameProvider({ children }) {
     const scores = { ...initialState.scoringCells.lower };
     const uniques = [...new Set(dice)];
     const uniquesLength = uniques.length;
-    const sumOfRoll = dice.reduce((acc, curr) => acc + curr, 0);
+    const sumOfRoll = sumUp(dice);
 
     function checkForThreeOfAKind(dice) {
       uniques.forEach((unique) => {
@@ -262,14 +288,12 @@ function GameProvider({ children }) {
     dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
   }
 
-  function scoreUpperTotal() {
-    console.log(scoredConditionScoresUpper.length);
+  function scoreGameTotal() {}
+
+  function scoreUpperTotalsAndBonuses() {
     if (!scoredConditionScoresUpper.length) return;
 
-    const upperTotal = scoredConditionScoresUpper.reduce(
-      (acc, curr) => acc + curr,
-      0
-    );
+    const upperTotal = sumUp(scoredConditionScoresUpper);
     let upperBonus = null;
     let grandTotalUpper = 0;
     if (scoredTotalsAndBonuses.upperTotal >= 63)
@@ -279,6 +303,17 @@ function GameProvider({ children }) {
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
       payload: { upperTotal, upperBonus, grandTotalUpper },
+    });
+  }
+
+  function scoreLowerTotalsAndBonuses() {
+    if (!scoredConditionScoresLower.length) return;
+
+    const lowerTotal = sumUp(scoredConditionScoresLower);
+
+    dispatch({
+      type: "SET_TOTALS_AND_BONSUSES_CELLS",
+      payload: { lowerTotal },
     });
   }
 
@@ -317,6 +352,7 @@ function GameProvider({ children }) {
   return (
     <GameContext.Provider
       value={{
+        gameIsEnded,
         rollDice,
         holdDie,
         returnDie,
