@@ -66,9 +66,11 @@ const ScoringRow = ({
         <td
           onClick={onClickHandlerYahtzee}
           className={
-            yahtzeeIsScored && isScoreable
+            yahtzeeIsScored && !isScoreable
+              ? "scored"
+              : yahtzeeIsScored && isScoreable
               ? "pointer scored"
-              : isScoreable
+              : !yahtzeeIsScored && isScoreable
               ? "scoreable"
               : null
           }

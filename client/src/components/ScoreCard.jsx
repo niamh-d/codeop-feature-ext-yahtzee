@@ -15,7 +15,7 @@ const ScoreCard = () => {
     upperTotal,
     upperBonus,
     grandTotalUpper,
-    yahtzeeBonus,
+    yahtzeeBonusStars,
     lowerTotal,
     grandTotalGame,
   } = scoredTotalsAndBonuses;
@@ -76,7 +76,7 @@ const ScoreCard = () => {
           ))}
           <tr>
             <td>Yahtzee bonus</td>
-            <td>{yahtzeeBonus ? yahtzeeBonus : ""}</td>
+            <td>{yahtzeeBonusStars ? yahtzeeBonusStars : ""}</td>
           </tr>
           <tr>
             <td>Total</td>

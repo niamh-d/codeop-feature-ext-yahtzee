@@ -69,7 +69,9 @@ function GameProvider({ children }) {
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
     const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
-    const diceToScore = [...heldDice, ...rolledNewDice];
+    // const diceToScore = [...heldDice, ...rolledNewDice];
+
+    const diceToScore = [5, 5, 5, 5, 5];
 
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
@@ -157,6 +159,8 @@ function GameProvider({ children }) {
     const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
 
     const yahtzeeBonusValue = yahtzeeBonusStars.split("").length * yahtzeeBonus;
+
+    console.log(yahtzeeBonusValue);
 
     const lowerTotal = sumUp(scoredConditionScoresLower) + yahtzeeBonusValue;
 
@@ -296,10 +300,11 @@ function GameProvider({ children }) {
   function scoreCriterionCell(criterionName, score) {
     if (criterionName === "yahtzee") {
       dispatch({ type: "YAHTZEE_IS_SCORED" });
-      const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
       if (scoredConditionNamesLower.includes("yahtzee")) {
-        const bonus = yahtzeeBonusStars + "*";
-        dispatch({ type: "ADD_YAHTZEE_BONUS", payload: bonus });
+        const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
+        const stars = yahtzeeBonusStars + "*";
+        dispatch({ type: "ADD_YAHTZEE_BONUS", payload: stars });
+        return;
       }
     }
 
