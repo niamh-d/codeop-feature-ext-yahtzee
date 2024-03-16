@@ -9,6 +9,7 @@ const ScoreCard = () => {
     scoredTotalsAndBonuses,
     yahtzeeIsScored,
     isScoreable,
+    yahtzeeIsClickable,
   } = useGame();
 
   const {
@@ -72,6 +73,7 @@ const ScoreCard = () => {
               handler={scoreCriterionCell}
               isScoreable={isScoreable}
               yahtzeeIsScored={yahtzeeIsScored}
+              yahtzeeIsClickable={yahtzeeIsClickable}
             />
           ))}
           <tr>

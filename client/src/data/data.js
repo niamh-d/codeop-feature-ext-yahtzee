@@ -3,6 +3,7 @@ export const NUM_ROUNDS = 13;
 export const NUM_ROLLS = 3;
 
 export const initialState = {
+  yahtzeeIsClickable: false,
   yahtzeeIsScored: false,
   gameIsEnded: false,
   isScoreable: false,

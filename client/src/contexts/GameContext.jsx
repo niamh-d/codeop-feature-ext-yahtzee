@@ -34,6 +34,7 @@ function GameProvider({ children }) {
       countRolled,
       isScoreable,
       yahtzeeIsScored,
+      yahtzeeIsClickable,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -299,13 +300,12 @@ function GameProvider({ children }) {
 
   function scoreCriterionCell(criterionName, score) {
     if (criterionName === "yahtzee") {
-      dispatch({ type: "YAHTZEE_IS_SCORED" });
       if (scoredConditionNamesLower.includes("yahtzee")) {
         const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
         const stars = yahtzeeBonusStars + "*";
         dispatch({ type: "ADD_YAHTZEE_BONUS", payload: stars });
         return;
-      }
+      } else dispatch({ type: "YAHTZEE_IS_SCORED" });
     }
 
     resetScoreCard(criterionName, score);
@@ -337,6 +337,7 @@ function GameProvider({ children }) {
         gameIsEnded,
         isScoreable,
         yahtzeeIsScored,
+        yahtzeeIsClickable,
       }}
     >
       {children}

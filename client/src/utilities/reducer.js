@@ -5,7 +5,12 @@ export default function reducer(state, action) {
     case "SET_HELD_DICE":
       return { ...state, heldDice: action.payload };
     case "SET_SCORED_DICE":
-      return { ...state, isScoreable: true, diceToScore: action.payload };
+      return {
+        ...state,
+        isScoreable: true,
+        yahtzeeIsClickable: true,
+        diceToScore: action.payload,
+      };
     case "SET_SCORED_CONDITIONS_UPPER":
       return {
         ...state,
@@ -35,6 +40,7 @@ export default function reducer(state, action) {
     case "ADD_YAHTZEE_BONUS":
       return {
         ...state,
+        yahtzeeIsClickable: false,
         scoredTotalsAndBonuses: {
           ...state.scoredTotalsAndBonuses,
           yahtzeeBonusStars: action.payload,
@@ -63,6 +69,7 @@ export default function reducer(state, action) {
         heldDice: [],
         diceToScore: [],
         isScoreable: false,
+        yahtzeeIsClickable: false,
       };
     case "END_GAME":
       return { ...state, gameIsEnded: true };

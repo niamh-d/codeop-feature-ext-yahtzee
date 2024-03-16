@@ -6,6 +6,7 @@ const ScoringRow = ({
   handler,
   isScoreable,
   yahtzeeIsScored,
+  yahtzeeIsClickable,
 }) => {
   const [isScored, setIsScored] = useState(false);
 
@@ -41,7 +42,7 @@ const ScoringRow = ({
   };
 
   const onClickHandlerYahtzee = () => {
-    if (!isScoreable) return;
+    if (!yahtzeeIsClickable) return;
     if (score === 0) return;
 
     handler(criterionName, score);
@@ -66,11 +67,13 @@ const ScoringRow = ({
         <td
           onClick={onClickHandlerYahtzee}
           className={
-            yahtzeeIsScored && !isScoreable
+            yahtzeeIsScored && !yahtzeeIsClickable
               ? "scored"
-              : yahtzeeIsScored && isScoreable
+              : !yahtzeeIsScored && yahtzeeIsClickable
+              ? "pointer"
+              : yahtzeeIsScored && yahtzeeIsClickable
               ? "pointer scored"
-              : !yahtzeeIsScored && isScoreable
+              : !yahtzeeIsScored && yahtzeeIsClickable
               ? "scoreable"
               : null
           }
