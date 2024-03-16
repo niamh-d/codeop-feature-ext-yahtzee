@@ -1,31 +1,16 @@
 import DiceRollingContainer from "./DiceRollingContainer";
 import ScoreCard from "./ScoreCard";
+import ControllersBox from "./ControllersBox";
 
 import { useGame } from "../contexts/GameContext";
 
 const Game = () => {
-  const { rollDice, criterionIsSelected, gameIsEnded, endGameEarly } =
-    useGame();
+  const { countGame } = useGame();
 
   return (
     <div>
-      {!gameIsEnded && (
-        <>
-          <button onClick={endGameEarly}>End game (early)</button>
-          <div>
-            {criterionIsSelected && (
-              <button className="btn__roll" onClick={rollDice}>
-                Roll dice
-              </button>
-            )}
-            {!criterionIsSelected && (
-              <button disabled className="btn__roll">
-                Select a scoring criterion
-              </button>
-            )}
-          </div>
-        </>
-      )}
+      <h2>Game {countGame}</h2>
+      <ControllersBox />
       <div className="container-game">
         <DiceRollingContainer />
         <ScoreCard />

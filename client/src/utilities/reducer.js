@@ -1,3 +1,5 @@
+import { initialState } from "../data/data";
+
 export default function reducer(state, action) {
   switch (action.type) {
     case "SET_ROLLED_DICE":
@@ -73,6 +75,11 @@ export default function reducer(state, action) {
       };
     case "END_GAME":
       return { ...state, gameIsEnded: true };
+    case "NEW_GAME":
+      return {
+        ...initialState,
+        countGame: state.countGame + 1,
+      };
     default:
       throw new Error("Unknown action type");
   }

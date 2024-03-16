@@ -36,6 +36,7 @@ function GameProvider({ children }) {
       isScoreable,
       yahtzeeIsScored,
       yahtzeeIsClickable,
+      countGame,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -110,6 +111,10 @@ function GameProvider({ children }) {
 
   function endGameEarly() {
     dispatch({ type: "END_GAME" });
+  }
+
+  function newGame() {
+    dispatch({ type: "NEW_GAME" });
   }
 
   // END GAME SCORING
@@ -331,6 +336,7 @@ function GameProvider({ children }) {
         returnDie,
         scoreCriterionCell,
         endGameEarly,
+        newGame,
         rolledDice,
         heldDice,
         scoringCells,
@@ -340,6 +346,7 @@ function GameProvider({ children }) {
         isScoreable,
         yahtzeeIsScored,
         yahtzeeIsClickable,
+        countGame,
       }}
     >
       {children}

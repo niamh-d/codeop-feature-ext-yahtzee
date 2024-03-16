@@ -3,6 +3,7 @@ export const NUM_ROUNDS = 13;
 export const NUM_ROLLS = 3;
 
 export const initialState = {
+  countGame: 1,
   yahtzeeIsClickable: false,
   yahtzeeIsScored: false,
   gameIsEnded: false,
@@ -11,7 +12,7 @@ export const initialState = {
   diceToScore: [],
   heldDice: [],
   countRolled: 0,
-  countRound: 10,
+  countRound: 12,
   criterionIsSelected: true,
   scoredConditions: {
     upper: [],
