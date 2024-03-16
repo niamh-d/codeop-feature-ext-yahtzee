@@ -32,6 +32,7 @@ function GameProvider({ children }) {
       scoredTotalsAndBonuses,
       criterionIsSelected,
       countRolled,
+      countRound,
       isScoreable,
       yahtzeeIsScored,
       yahtzeeIsClickable,
@@ -70,9 +71,7 @@ function GameProvider({ children }) {
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
     const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
-    // const diceToScore = [...heldDice, ...rolledNewDice];
-
-    const diceToScore = [5, 5, 5, 5, 5];
+    const diceToScore = [...heldDice, ...rolledNewDice];
 
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
@@ -103,6 +102,11 @@ function GameProvider({ children }) {
   }
 
   // END GAME
+
+  useEffect(() => {
+    if (countRound >= 14) dispatch({ type: "END_GAME" });
+    else return;
+  }, [countRound]);
 
   function endGameEarly() {
     dispatch({ type: "END_GAME" });
@@ -160,8 +164,6 @@ function GameProvider({ children }) {
     const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
 
     const yahtzeeBonusValue = yahtzeeBonusStars.split("").length * yahtzeeBonus;
-
-    console.log(yahtzeeBonusValue);
 
     const lowerTotal = sumUp(scoredConditionScoresLower) + yahtzeeBonusValue;
 

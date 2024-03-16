@@ -11,7 +11,7 @@ export const initialState = {
   diceToScore: [],
   heldDice: [],
   countRolled: 0,
-  countRound: 0,
+  countRound: 10,
   criterionIsSelected: true,
   scoredConditions: {
     upper: [],
