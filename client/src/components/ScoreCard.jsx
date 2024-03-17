@@ -5,21 +5,21 @@ import YahtzeeScoringRow from "./YahtzeeScoringRow";
 
 const ScoreCard = () => {
   const {
-    scoringCells,
+    displayedScoringCells,
     scoreConditionCell,
     scoredTotalsAndBonuses,
-    yahtzeeIsScored,
+    yahtzeeScoreCount,
     isScoreable,
     yahtzeeIsClickable,
   } = useGame();
 
   const {
-    upperTotal,
-    upperBonus,
-    grandTotalUpper,
-    yahtzeeBonusStars,
-    lowerTotal,
-    grandTotalGame,
+    upperTotalScored,
+    upperBonusScored,
+    grandTotalUpperScored,
+    yahtzeeBonusScored,
+    lowerTotalScored,
+    grandTotalGameScored,
   } = scoredTotalsAndBonuses;
 
   return (
@@ -34,26 +34,26 @@ const ScoreCard = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(scoringCells.upper).map((condition) => (
+          {Object.keys(displayedScoringCells.upper).map((condition) => (
             <ScoringRow
               key={condition}
               conditionName={condition}
-              score={scoringCells.upper[condition]}
+              score={displayedScoringCells.upper[condition]}
               handler={scoreConditionCell}
               isScoreable={isScoreable}
             />
           ))}
           <tr>
             <td>Total</td>
-            <td>{upperTotal ? upperTotal : ""}</td>
+            <td>{upperTotalScored ? upperTotalScored : ""}</td>
           </tr>
           <tr>
             <td>Bonus</td>
-            <td>{upperBonus ? upperBonus : ""}</td>
+            <td>{upperBonusScored ? upperBonusScored : ""}</td>
           </tr>
           <tr>
             <td>Upper Total</td>
-            <td>{grandTotalUpper ? grandTotalUpper : ""}</td>
+            <td>{grandTotalUpperScored ? grandTotalUpperScored : ""}</td>
           </tr>
         </tbody>
       </table>
@@ -66,33 +66,32 @@ const ScoreCard = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(scoringCells.lower).map((condition) => (
+          {Object.keys(displayedScoringCells.lower).map((condition) => (
             <ScoringRow
               key={condition}
               conditionName={condition}
-              score={scoringCells.lower[condition]}
+              score={displayedScoringCells.lower[condition]}
               handler={scoreConditionCell}
               isScoreable={isScoreable}
             />
           ))}
           <YahtzeeScoringRow
-            score={scoringCells.lower.yahtzee}
+            score={displayedScoringCells.lower.yahtzee}
             handler={scoreConditionCell}
-            isScoreable={isScoreable}
-            yahtzeeIsScored={yahtzeeIsScored}
+            yahtzeeScoreCount={yahtzeeScoreCount}
             yahtzeeIsClickable={yahtzeeIsClickable}
           />
           <tr>
             <td>Yahtzee bonus</td>
-            <td>{yahtzeeBonusStars ? yahtzeeBonusStars : ""}</td>
+            <td>{yahtzeeBonusScored ? yahtzeeBonusScored : ""}</td>
           </tr>
           <tr>
             <td>Total</td>
-            <td>{lowerTotal ? lowerTotal : ""}</td>
+            <td>{lowerTotalScored ? lowerTotalScored : ""}</td>
           </tr>
           <tr>
             <td>Game Grand Total</td>
-            <td>{grandTotalGame ? grandTotalGame : ""}</td>
+            <td>{grandTotalGameScored ? grandTotalGameScored : ""}</td>
           </tr>
         </tbody>
       </table>

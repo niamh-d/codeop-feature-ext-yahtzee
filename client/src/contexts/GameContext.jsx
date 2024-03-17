@@ -6,8 +6,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import {
   initialState,
   fixedScoresAndBonuses,
-  TOTAL_NUM_DICE,
-  NUM_ROLLS,
+  gameSettings,
 } from "../data/data";
 import {
   randInt,
@@ -27,24 +26,32 @@ function GameProvider({ children }) {
       rolledDice,
       heldDice,
       diceToScore,
-      scoringCells,
+      displayedScoringCells,
       scoredConditions,
+      scoredCells,
       scoredTotalsAndBonuses,
       scoringConditionIsSelected,
       countRolled,
       countRound,
       isScoreable,
-      yahtzeeIsScored,
-      yahtzeeIsClickable,
+      yahtzee,
       countGame,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
 
+  const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
+
+  const { TOTAL_NUM_DICE, NUM_ROUNDS, NUM_ROLLS } = gameSettings;
+
   // SET-UP AND SCORED CONDITION NAMES AND SCORES
 
-  const conditionNamesUpper = Object.keys(initialState.scoringCells.upper);
-  const conditionNamesLower = Object.keys(initialState.scoringCells.lower);
+  const conditionNamesUpper = Object.keys(
+    initialState.displayedScoringCells.upper
+  );
+  const conditionNamesLower = Object.keys(
+    initialState.displayedScoringCells.lower
+  );
 
   function returnScoredConditionNamesAndScores(scoredConditions, nameOrScore) {
     return scoredConditions.map((condition) => condition[nameOrScore]);
@@ -105,7 +112,7 @@ function GameProvider({ children }) {
   // END GAME
 
   useEffect(() => {
-    if (countRound >= 14) dispatch({ type: "END_GAME" });
+    if (countRound >= NUM_ROUNDS + 1) dispatch({ type: "END_GAME" });
     else return;
   }, [countRound]);
 
@@ -126,18 +133,19 @@ function GameProvider({ children }) {
   }, [gameIsEnded]);
 
   useEffect(() => {
-    const { grandTotalUpper, lowerTotal, grandTotalGame } =
+    const { grandTotalUpperScored, lowerTotalScored, grandTotalGameScored } =
       scoredTotalsAndBonuses;
-    if (!grandTotalUpper && !lowerTotal) return;
-    if (grandTotalGame) return;
+    if (!grandTotalUpperScored && !lowerTotalScored) return;
+    if (grandTotalGameScored) return;
 
-    scoreGameTotal(grandTotalUpper, lowerTotal);
+    scoreGameTotal(grandTotalUpperScored, lowerTotalScored);
   }, [scoredTotalsAndBonuses]);
 
-  function scoreGameTotal(grandTotalUpper, lowerTotal) {
+  function scoreGameTotal(upper, lower) {
+    const grandTotalGameScored = upper + lower;
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { grandTotalGame: grandTotalUpper + lowerTotal },
+      payload: { grandTotalGameScored },
     });
   }
 
@@ -149,33 +157,49 @@ function GameProvider({ children }) {
   function scoreUpperTotalsAndBonuses() {
     if (!scoredConditionScoresUpper.length) return;
 
-    const upperTotal = sumUp(scoredConditionScoresUpper);
-    let upperBonus = null;
-    let grandTotalUpper = 0;
-    if (scoredTotalsAndBonuses.upperTotal >= 63)
-      upperBonus = fixedScoresAndBonuses.upperTotalBonus;
-    if (!upperBonus) grandTotalUpper = upperTotal;
+    const upperTotalScored = sumUp(scoredConditionScoresUpper);
+    let upperBonusScored = null;
+    let grandTotalUpperScored = 0;
+    if (scoredTotalsAndBonuses.upperTotalScored >= 63) {
+      upperBonusScored = fixedScoresAndBonuses.upperTotalBonusValue;
+      grandTotalUpperScored = upperTotalScored + upperBonusScored;
+    }
+    if (!upperBonusScored) grandTotalUpperScored = upperTotalScored;
 
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { upperTotal, upperBonus, grandTotalUpper },
+      payload: { upperTotalScored, upperBonusScored, grandTotalUpperScored },
     });
   }
 
   function scoreLowerTotalsAndBonuses() {
     if (!scoredConditionScoresLower.length) return;
 
-    const { yahtzeeBonus } = fixedScoresAndBonuses;
-    const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
-
-    const yahtzeeBonusValue = yahtzeeBonusStars.split("").length * yahtzeeBonus;
-
-    const lowerTotal = sumUp(scoredConditionScoresLower) + yahtzeeBonusValue;
+    const { yahtzeeBonusValue } = fixedScoresAndBonuses;
+    const yahtzeeBonusScored =
+      yahtzeeScoreCount > 1 ? yahtzeeScoreCount - 1 * yahtzeeBonusValue : 0;
+    const lowerTotalScored =
+      sumUp(scoredConditionScoresLower) + yahtzeeBonusScored;
 
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { lowerTotal },
+      payload: { lowerTotalScored, yahtzeeBonusScored },
     });
+  }
+
+  // RESETTING DISPLAYED SCORING CELLS
+
+  useEffect(() => {
+    if (
+      !scoredConditionScoresLower.length ||
+      !scoredConditionScoresUpper.length
+    )
+      return;
+    resetScoreCard();
+  }, [scoredConditions]);
+
+  function resetScoreCard() {
+    dispatch({ type: "RESET_DISPLAYED_SCORING_CELLS" });
   }
 
   // IN-GAME SCORING
@@ -190,7 +214,7 @@ function GameProvider({ children }) {
   }
 
   function calculateQualifyingScoringCellsUpper(dice) {
-    const scores = { ...initialState.scoringCells.upper };
+    const scores = { ...scoredCells.upper };
 
     const applicableConditionsUpper = conditionNamesUpper.filter(
       (condition) => !scoredConditionNamesUpper.includes(condition)
@@ -259,7 +283,7 @@ function GameProvider({ children }) {
       yahtzeeValue,
     } = fixedScoresAndBonuses;
 
-    const scores = { ...initialState.scoringCells.lower };
+    const scores = { ...scoredCells.lower };
     const uniques = [...new Set(dice)];
     const uniquesLength = uniques.length;
     const sumOfRoll = sumUp(dice);
@@ -291,41 +315,45 @@ function GameProvider({ children }) {
 
     const combinedScores = { upper, lower };
 
-    dispatch({ type: "SET_SCORING_CELLS", payload: combinedScores });
+    dispatch({ type: "SET_DISPLAYED_SCORING_CELLS", payload: combinedScores });
   }
 
-  function resetScoreCard(conditionName, score) {
-    const displayedCells = { ...initialState.scoringCells };
-
-    if (conditionIsOfUpperOrLowerType(conditionName) === "upper")
-      displayedCells.upper[conditionName] = score;
-    if (conditionIsOfUpperOrLowerType(conditionName) === "lower")
-      displayedCells.lower[conditionName] = score;
-
-    dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
-  }
-
-  function scoreConditionCell(conditionName, score) {
-    if (conditionName === "yahtzee") {
-      if (scoredConditionNamesLower.includes("yahtzee")) {
-        const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
-        const stars = yahtzeeBonusStars + "*";
-        dispatch({ type: "ADD_YAHTZEE_BONUS", payload: stars });
-        return;
-      } else dispatch({ type: "YAHTZEE_IS_SCORED" });
-    }
-
-    resetScoreCard(conditionName, score);
-
-    const upperOrLower =
-      conditionIsOfUpperOrLowerType(conditionName).toUpperCase();
-
+  function setScoredConditionsArray(conditionName, score, upperOrLower) {
     dispatch({
-      type: `SET_SCORED_CONDITIONS_${upperOrLower}`,
+      type: `SET_SCORED_CONDITIONS_ARRAY_${upperOrLower}`,
       payload: { conditionName, score },
     });
+  }
 
-    dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
+  function setScoredCells(conditionName, score, upperOrLower) {
+    const scoredCell = {};
+    scoredCell[conditionName] = score;
+
+    dispatch({
+      type: `SET_SCORED_CELLS_${upperOrLower}`,
+      payload: scoredCell,
+    });
+  }
+
+  function scoreConditionCell(conditionName) {
+    if (conditionName === "yahtzee") {
+      dispatch({
+        type: "INCREMENT_YAHTZEE_SCORE_COUNT",
+      });
+
+      if (yahtzeeScoreCount >= 1) return;
+    }
+
+    const upperOrLower = conditionIsOfUpperOrLowerType(conditionName);
+    const upperOrLowerReducerStr = upperOrLower.toUpperCase();
+
+    const score = displayedScoringCells[upperOrLower][conditionName];
+
+    setScoredCells(conditionName, score, upperOrLowerReducerStr);
+
+    setScoredConditionsArray(conditionName, score, upperOrLowerReducerStr);
+
+    dispatch({ type: "SCORING_CONDITION_IS_SELECTED" });
   }
 
   return (
@@ -339,12 +367,12 @@ function GameProvider({ children }) {
         newGame,
         rolledDice,
         heldDice,
-        scoringCells,
+        displayedScoringCells,
         scoredTotalsAndBonuses,
         scoringConditionIsSelected,
         gameIsEnded,
         isScoreable,
-        yahtzeeIsScored,
+        yahtzeeScoreCount,
         yahtzeeIsClickable,
         countGame,
       }}

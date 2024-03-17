@@ -29,20 +29,20 @@ const ScoringRow = ({ conditionName, score, handler, isScoreable }) => {
 
     if (!score) score = 0;
 
-    handler(conditionName, score);
+    handler(conditionName);
 
     setIsScored(true);
   };
 
   return (
     <tr>
-      <td>{criterionTransformString(conditionName)}</td>
+      <td>{conditionTransformString(conditionName)}</td>
 
       <td
         onClick={onClickHandler}
         className={isScored ? "scored" : isScoreable ? "scoreable" : null}
       >
-        {score === 0 && conditionName !== "chance" ? "0" : score ? score : null}
+        {score === 0 && isScored ? "0" : score ? score : null}
       </td>
     </tr>
   );

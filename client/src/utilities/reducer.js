@@ -13,7 +13,7 @@ export default function reducer(state, action) {
         yahtzeeIsClickable: true,
         diceToScore: action.payload,
       };
-    case "SET_SCORED_CONDITIONS_UPPER":
+    case "SET_SCORED_CONDITIONS_ARRAY_UPPER":
       return {
         ...state,
         scoredConditions: {
@@ -21,7 +21,7 @@ export default function reducer(state, action) {
           upper: [...state.scoredConditions.upper, action.payload],
         },
       };
-    case "SET_SCORED_CONDITIONS_LOWER":
+    case "SET_SCORED_CONDITIONS_ARRAY_LOWER":
       return {
         ...state,
         scoredConditions: {
@@ -29,23 +29,48 @@ export default function reducer(state, action) {
           lower: [...state.scoredConditions.lower, action.payload],
         },
       };
-    case "SET_SCORING_CELLS":
+    case "RESET_DISPLAYED_SCORING_CELLS":
       return {
         ...state,
-        scoringCells: { ...state.scoringCells, ...action.payload },
+        displayedScoringCells: {
+          ...state.scoredCells,
+        },
+      };
+    case "SET_DISPLAYED_SCORING_CELLS":
+      return {
+        ...state,
+        displayedScoringCells: {
+          ...action.payload,
+        },
+      };
+    case "SET_SCORED_CELLS_UPPER":
+      return {
+        ...state,
+        scoredCells: {
+          ...state.scoredCells,
+          upper: { ...state.scoredCells.upper, ...action.payload },
+        },
+      };
+    case "SET_SCORED_CELLS_LOWER":
+      return {
+        ...state,
+        scoredCells: {
+          ...state.scoredCells,
+          lower: { ...state.scoredCells.lower, ...action.payload },
+        },
       };
     case "YAHTZEE_IS_SCORED":
       return {
         ...state,
         yahtzeeIsScored: true,
       };
-    case "ADD_YAHTZEE_BONUS":
+    case "INCREMENT_YAHTZEE_SCORE_COUNT":
       return {
         ...state,
-        yahtzeeIsClickable: false,
-        scoredTotalsAndBonuses: {
-          ...state.scoredTotalsAndBonuses,
-          yahtzeeBonusStars: action.payload,
+        yahtzee: {
+          ...state.yahtzee,
+          yahtzeeIsClickable: false,
+          yahtzeeScoreCount: state.yahtzee.yahtzeeScoreCount + 1,
         },
       };
     case "SET_TOTALS_AND_BONSUSES_CELLS":

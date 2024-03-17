@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-
-const ScoringRow = ({
+const YahtzeeScoringRow = ({
   conditionName,
   score,
   handler,
-  isScoreable,
-  yahtzeeIsScored,
+  yahtzeeScoreCount,
   yahtzeeIsClickable,
 }) => {
-  const [isScored, setIsScored] = useState(false);
+  const yahtzeeIsScored = yahtzeeScoreCount > 0;
 
   const onClickHandler = () => {
     if (!yahtzeeIsClickable) return;
     if (score === 0) return;
 
-    handler(conditionName, score);
+    handler(conditionName);
   };
 
   return (
@@ -34,10 +31,10 @@ const ScoringRow = ({
             : null
         }
       >
-        {score === 0 ? "0" : score ? score : null}
+        {score === 0 && yahtzeeIsScored ? "0" : score ? score : null}
       </td>
     </tr>
   );
 };
 
-export default ScoringRow;
+export default YahtzeeScoringRow;

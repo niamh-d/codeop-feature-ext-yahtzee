@@ -1,8 +1,13 @@
 import { useGame } from "../contexts/GameContext";
 
 const ControllersBox = () => {
-  const { rollDice, criterionIsSelected, gameIsEnded, endGameEarly, newGame } =
-    useGame();
+  const {
+    rollDice,
+    scoringConditionIsSelected,
+    gameIsEnded,
+    endGameEarly,
+    newGame,
+  } = useGame();
 
   return (
     <>
@@ -11,14 +16,14 @@ const ControllersBox = () => {
         <>
           <button onClick={endGameEarly}>End game (early)</button>
           <div>
-            {criterionIsSelected && (
+            {scoringConditionIsSelected && (
               <button className="btn__roll" onClick={rollDice}>
                 Roll dice
               </button>
             )}
-            {!criterionIsSelected && (
+            {!scoringConditionIsSelected && (
               <button disabled className="btn__roll">
-                Select a scoring criterion
+                Select a scoring condition
               </button>
             )}
           </div>
