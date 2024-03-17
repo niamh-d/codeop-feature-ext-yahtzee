@@ -30,7 +30,7 @@ function GameProvider({ children }) {
       scoringCells,
       scoredConditions,
       scoredTotalsAndBonuses,
-      criterionIsSelected,
+      scoringConditionIsSelected,
       countRolled,
       countRound,
       isScoreable,
@@ -52,7 +52,7 @@ function GameProvider({ children }) {
 
   const scoredConditionNamesUpper = returnScoredConditionNamesAndScores(
     scoredConditions.upper,
-    "criterionName"
+    "conditionName"
   );
   const scoredConditionScoresUpper = returnScoredConditionNamesAndScores(
     scoredConditions.upper,
@@ -60,7 +60,7 @@ function GameProvider({ children }) {
   );
   const scoredConditionNamesLower = returnScoredConditionNamesAndScores(
     scoredConditions.lower,
-    "criterionName"
+    "conditionName"
   );
   const scoredConditionScoresLower = returnScoredConditionNamesAndScores(
     scoredConditions.lower,
@@ -78,7 +78,7 @@ function GameProvider({ children }) {
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "INCREMENT_COUNT_ROLL" });
     if (countRolled === NUM_ROLLS - 1)
-      dispatch({ type: "SET_CRITERION_NOT_SELECTED" });
+      dispatch({ type: "SET_SCORING_CONDITION_NOT_SELECTED" });
   }
 
   function setDice(rolled, held) {
@@ -294,19 +294,19 @@ function GameProvider({ children }) {
     dispatch({ type: "SET_SCORING_CELLS", payload: combinedScores });
   }
 
-  function resetScoreCard(criterionName, score) {
+  function resetScoreCard(conditionName, score) {
     const displayedCells = { ...initialState.scoringCells };
 
-    if (conditionIsOfUpperOrLowerType(criterionName) === "upper")
-      displayedCells.upper[criterionName] = score;
-    if (conditionIsOfUpperOrLowerType(criterionName) === "lower")
-      displayedCells.lower[criterionName] = score;
+    if (conditionIsOfUpperOrLowerType(conditionName) === "upper")
+      displayedCells.upper[conditionName] = score;
+    if (conditionIsOfUpperOrLowerType(conditionName) === "lower")
+      displayedCells.lower[conditionName] = score;
 
     dispatch({ type: "SET_SCORING_CELLS", payload: displayedCells });
   }
 
-  function scoreCriterionCell(criterionName, score) {
-    if (criterionName === "yahtzee") {
+  function scoreConditionCell(conditionName, score) {
+    if (conditionName === "yahtzee") {
       if (scoredConditionNamesLower.includes("yahtzee")) {
         const { yahtzeeBonusStars } = scoredTotalsAndBonuses;
         const stars = yahtzeeBonusStars + "*";
@@ -315,14 +315,14 @@ function GameProvider({ children }) {
       } else dispatch({ type: "YAHTZEE_IS_SCORED" });
     }
 
-    resetScoreCard(criterionName, score);
+    resetScoreCard(conditionName, score);
 
     const upperOrLower =
-      conditionIsOfUpperOrLowerType(criterionName).toUpperCase();
+      conditionIsOfUpperOrLowerType(conditionName).toUpperCase();
 
     dispatch({
       type: `SET_SCORED_CONDITIONS_${upperOrLower}`,
-      payload: { criterionName, score },
+      payload: { conditionName, score },
     });
 
     dispatch({ type: "SCORING_CRITERION_IS_SELECTED" });
@@ -334,14 +334,14 @@ function GameProvider({ children }) {
         rollDice,
         holdDie,
         returnDie,
-        scoreCriterionCell,
+        scoreConditionCell,
         endGameEarly,
         newGame,
         rolledDice,
         heldDice,
         scoringCells,
         scoredTotalsAndBonuses,
-        criterionIsSelected,
+        scoringConditionIsSelected,
         gameIsEnded,
         isScoreable,
         yahtzeeIsScored,

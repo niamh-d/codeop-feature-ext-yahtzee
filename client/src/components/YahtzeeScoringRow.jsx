@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const ScoringRow = ({
-  criterionName,
+  conditionName,
   score,
   handler,
   isScoreable,
@@ -14,7 +14,7 @@ const ScoringRow = ({
     if (!yahtzeeIsClickable) return;
     if (score === 0) return;
 
-    handler(criterionName, score);
+    handler(conditionName, score);
   };
 
   return (

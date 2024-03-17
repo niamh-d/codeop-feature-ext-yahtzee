@@ -13,7 +13,7 @@ export const initialState = {
   heldDice: [],
   countRolled: 0,
   countRound: 12,
-  criterionIsSelected: true,
+  scoringConditionIsSelected: true,
   scoredConditions: {
     upper: [],
     lower: [],

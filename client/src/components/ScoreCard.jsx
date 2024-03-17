@@ -6,7 +6,7 @@ import YahtzeeScoringRow from "./YahtzeeScoringRow";
 const ScoreCard = () => {
   const {
     scoringCells,
-    scoreCriterionCell,
+    scoreConditionCell,
     scoredTotalsAndBonuses,
     yahtzeeIsScored,
     isScoreable,
@@ -34,12 +34,12 @@ const ScoreCard = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(scoringCells.upper).map((criterion) => (
+          {Object.keys(scoringCells.upper).map((condition) => (
             <ScoringRow
-              key={criterion}
-              criterionName={criterion}
-              score={scoringCells.upper[criterion]}
-              handler={scoreCriterionCell}
+              key={condition}
+              conditionName={condition}
+              score={scoringCells.upper[condition]}
+              handler={scoreConditionCell}
               isScoreable={isScoreable}
             />
           ))}
@@ -66,18 +66,18 @@ const ScoreCard = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(scoringCells.lower).map((criterion) => (
+          {Object.keys(scoringCells.lower).map((condition) => (
             <ScoringRow
-              key={criterion}
-              criterionName={criterion}
-              score={scoringCells.lower[criterion]}
-              handler={scoreCriterionCell}
+              key={condition}
+              conditionName={condition}
+              score={scoringCells.lower[condition]}
+              handler={scoreConditionCell}
               isScoreable={isScoreable}
             />
           ))}
           <YahtzeeScoringRow
             score={scoringCells.lower.yahtzee}
-            handler={scoreCriterionCell}
+            handler={scoreConditionCell}
             isScoreable={isScoreable}
             yahtzeeIsScored={yahtzeeIsScored}
             yahtzeeIsClickable={yahtzeeIsClickable}

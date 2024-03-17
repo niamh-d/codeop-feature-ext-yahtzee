@@ -59,14 +59,14 @@ export default function reducer(state, action) {
     case "INCREMENT_COUNT_ROLL": {
       return { ...state, countRolled: state.countRolled + 1 };
     }
-    case "SET_CRITERION_NOT_SELECTED":
-      return { ...state, isScoreable: true, criterionIsSelected: false };
-    case "SCORING_CRITERION_IS_SELECTED":
+    case "SET_SCORING_CONDITION_NOT_SELECTED":
+      return { ...state, isScoreable: true, conditionIsSelected: false };
+    case "SCORING_CONDITION_IS_SELECTED":
       return {
         ...state,
         countRolled: 0,
         countRound: state.countRound + 1,
-        criterionIsSelected: true,
+        conditionIsSelected: true,
         rolledDice: [],
         heldDice: [],
         diceToScore: [],

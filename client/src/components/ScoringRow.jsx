@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
-  if (criterionName === "yahtzee") return;
+const ScoringRow = ({ conditionName, score, handler, isScoreable }) => {
+  if (conditionName === "yahtzee") return;
 
   const [isScored, setIsScored] = useState(false);
 
-  const criterionTransformString = (criterionName) => {
-    switch (criterionName) {
+  const conditionTransformString = (conditionName) => {
+    switch (conditionName) {
       case "threeKind":
         return "Three of a Kind";
       case "fourKind":
@@ -20,7 +20,7 @@ const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
       case "chance":
         return "Chance";
       default:
-        return criterionName[0].toUpperCase() + criterionName.slice(1);
+        return conditionName[0].toUpperCase() + conditionName.slice(1);
     }
   };
 
@@ -29,20 +29,20 @@ const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
 
     if (!score) score = 0;
 
-    handler(criterionName, score);
+    handler(conditionName, score);
 
     setIsScored(true);
   };
 
   return (
     <tr>
-      <td>{criterionTransformString(criterionName)}</td>
+      <td>{criterionTransformString(conditionName)}</td>
 
       <td
         onClick={onClickHandler}
         className={isScored ? "scored" : isScoreable ? "scoreable" : null}
       >
-        {score === 0 && criterionName !== "chance" ? "0" : score ? score : null}
+        {score === 0 && conditionName !== "chance" ? "0" : score ? score : null}
       </td>
     </tr>
   );
