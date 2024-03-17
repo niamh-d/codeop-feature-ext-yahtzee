@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ScoringRow = ({ conditionName, score, handler, isScoreable }) => {
+const ScoringRow = ({
+  conditionName,
+  score,
+  handler,
+  isScoreable,
+  countGame,
+}) => {
   if (conditionName === "yahtzee") return;
 
   const [isScored, setIsScored] = useState(false);
+
+  useEffect(() => {
+    setIsScored(false);
+  }, [countGame]);
 
   const conditionTransformString = (conditionName) => {
     switch (conditionName) {

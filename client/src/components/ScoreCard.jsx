@@ -11,6 +11,7 @@ const ScoreCard = () => {
     yahtzeeScoreCount,
     isScoreable,
     yahtzeeIsClickable,
+    countGame,
   } = useGame();
 
   const {
@@ -41,6 +42,7 @@ const ScoreCard = () => {
               score={displayedScoringCells.upper[condition]}
               handler={scoreConditionCell}
               isScoreable={isScoreable}
+              countGame={countGame}
             />
           ))}
           <tr>
@@ -73,6 +75,7 @@ const ScoreCard = () => {
               score={displayedScoringCells.lower[condition]}
               handler={scoreConditionCell}
               isScoreable={isScoreable}
+              countGame={countGame}
             />
           ))}
           <YahtzeeScoringRow
