@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 
-const ScoringRow = ({
-  criterionName,
-  score,
-  handler,
-  isScoreable,
-  yahtzeeIsScored,
-  yahtzeeIsClickable,
-}) => {
+const ScoringRow = ({ criterionName, score, handler, isScoreable }) => {
+  if (criterionName === "yahtzee") return;
+
   const [isScored, setIsScored] = useState(false);
 
   const criterionTransformString = (criterionName) => {
@@ -22,8 +17,6 @@ const ScoringRow = ({
         return "Small Straight";
       case "largeStraight":
         return "Large Straight";
-      case "yahtzee":
-        return "Yahtzee";
       case "chance":
         return "Chance";
       default:
@@ -41,46 +34,16 @@ const ScoringRow = ({
     setIsScored(true);
   };
 
-  const onClickHandlerYahtzee = () => {
-    if (!yahtzeeIsClickable) return;
-    if (score === 0) return;
-
-    handler(criterionName, score);
-  };
-
   return (
     <tr>
       <td>{criterionTransformString(criterionName)}</td>
-      {criterionName !== "yahtzee" && (
-        <td
-          onClick={onClickHandler}
-          className={isScored ? "scored" : isScoreable ? "scoreable" : null}
-        >
-          {score === 0 && criterionName !== "chance"
-            ? "0"
-            : score
-            ? score
-            : null}
-        </td>
-      )}
-      {criterionName === "yahtzee" && (
-        <td
-          onClick={onClickHandlerYahtzee}
-          className={
-            yahtzeeIsScored && !yahtzeeIsClickable
-              ? "scored"
-              : !yahtzeeIsScored && yahtzeeIsClickable
-              ? "pointer"
-              : yahtzeeIsScored && yahtzeeIsClickable
-              ? "pointer scored"
-              : !yahtzeeIsScored && yahtzeeIsClickable
-              ? "scoreable"
-              : null
-          }
-        >
-          {score === 0 ? "0" : score ? score : null}
-        </td>
-      )}
+
+      <td
+        onClick={onClickHandler}
+        className={isScored ? "scored" : isScoreable ? "scoreable" : null}
+      >
+        {score === 0 && criterionName !== "chance" ? "0" : score ? score : null}
+      </td>
     </tr>
   );
 };

@@ -1,6 +1,7 @@
 import { useGame } from "../contexts/GameContext";
 
 import ScoringRow from "./ScoringRow";
+import YahtzeeScoringRow from "./YahtzeeScoringRow";
 
 const ScoreCard = () => {
   const {
@@ -72,10 +73,15 @@ const ScoreCard = () => {
               score={scoringCells.lower[criterion]}
               handler={scoreCriterionCell}
               isScoreable={isScoreable}
-              yahtzeeIsScored={yahtzeeIsScored}
-              yahtzeeIsClickable={yahtzeeIsClickable}
             />
           ))}
+          <YahtzeeScoringRow
+            score={scoringCells.lower.yahtzee}
+            handler={scoreCriterionCell}
+            isScoreable={isScoreable}
+            yahtzeeIsScored={yahtzeeIsScored}
+            yahtzeeIsClickable={yahtzeeIsClickable}
+          />
           <tr>
             <td>Yahtzee bonus</td>
             <td>{yahtzeeBonusStars ? yahtzeeBonusStars : ""}</td>
