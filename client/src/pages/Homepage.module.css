@@ -1,5 +1,4 @@
 .homepage {
-  position: relative;
   height: 97vh;
   width: 100%;
   display: flex;
@@ -7,21 +6,32 @@
   justify-content: center;
 }
 
-.homepage::before {
-  content: "";
-  background-image: url("../imgs/homepage.jpg");
-  background-size: cover;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  opacity: 0.15;
-}
-
 .homepage__content {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.heading-box {
+  margin-bottom: 3rem;
+}
+
+.heading {
+  font-size: 6rem;
+  font-style: italic;
+  letter-spacing: 3px;
+}
+
+.tag-line {
+  font-size: 1rem;
+  margin-left: 2rem;
+}
+
+.cta-text {
+  font-size: 2rem;
+}
+
+.button-box {
+  display: flex;
+  gap: 1.5rem;
 }

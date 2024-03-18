@@ -7,16 +7,24 @@ export default function Homepage() {
     <main>
       <section className={styles.homepage}>
         <div className={styles.homepage__content}>
-          <h1>yahtzee</h1>
-          <p>Get rolling!</p>
+          <div className={styles["heading-box"]}>
+            <h1 className={styles.heading}>
+              yahtzǝ!<sup>&#8482;</sup>
+            </h1>
+            <p className={styles["tag-line"]}>
+              Your favorite Yahtzee dice roller.
+            </p>
+          </div>
           <div>
-            <button>
-              <Link to="/signup">Sign up</Link>
-            </button>
-
-            <button>
-              <Link to="/login">Log in</Link>
-            </button>
+            <h2 className={styles["cta-text"]}>Gǝt rolling!</h2>
+            <div className={styles["button-box"]}>
+              <button className="btn btn-primary">
+                <Link to="/signup">Create your free account</Link>
+              </button>
+              <button className="btn btn-secondary">
+                <Link to="/login">Log in</Link>
+              </button>
+            </div>
           </div>
         </div>
       </section>
