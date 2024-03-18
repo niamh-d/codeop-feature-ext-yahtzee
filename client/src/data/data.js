@@ -40,7 +40,7 @@ export const initialState = {
   counts: {
     countGame: 1,
     countRolled: 0,
-    countRound: 0,
+    countRound: 1,
   },
   dice: {
     rolledDice: [],

@@ -84,7 +84,7 @@ function GameProvider({ children }) {
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "INCREMENT_COUNT_ROLL" });
     console.log(countRolled, NUM_ROLLS);
-    if (countRolled === NUM_ROLLS - 1)
+    if (countRolled >= NUM_ROLLS - 1)
       dispatch({ type: "SET_SCORING_CONDITION_NOT_SELECTED" });
   }
 
