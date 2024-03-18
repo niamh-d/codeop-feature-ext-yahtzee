@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Homepage.module.css";
 
 export default function Homepage() {
+  const navigate = useNavigate();
+
+  const loginHandler = () => navigate("/login");
+  const signupHandler = () => navigate("/signup");
+
   return (
     <main>
       <section className={styles.homepage}>
@@ -18,11 +23,11 @@ export default function Homepage() {
           <div>
             <h2 className={styles["cta-text"]}>Gǝt rolling now!</h2>
             <div className={styles["button-box"]}>
-              <button className="btn btn-primary">
-                <Link to="/signup">Create your free account</Link>
+              <button className="btn btn-primary" onClick={signupHandler}>
+                Create your free account
               </button>
-              <button className="btn btn-secondary">
-                <Link to="/login">Log in</Link>
+              <button className="btn btn-secondary" onClick={loginHandler}>
+                Log in
               </button>
             </div>
           </div>
