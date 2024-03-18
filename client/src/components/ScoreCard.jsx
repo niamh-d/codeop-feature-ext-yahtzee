@@ -2,6 +2,7 @@ import { useGame } from "../contexts/GameContext";
 
 import ScoringRow from "./ScoringRow";
 import YahtzeeScoringRow from "./YahtzeeScoringRow";
+import BonusTotalRow from "./BonusTotalRow";
 
 const ScoreCard = () => {
   const {
@@ -17,7 +18,6 @@ const ScoreCard = () => {
     upperTotalScored,
     upperBonusScored,
     grandTotalUpperScored,
-    yahtzeeBonusScored,
     lowerTotalScored,
     grandTotalGameScored,
   } = scoredTotalsAndBonuses;
@@ -50,18 +50,9 @@ const ScoreCard = () => {
               countGame={countGame}
             />
           ))}
-          <tr>
-            <td>Total</td>
-            <td>{upperTotalScored ? upperTotalScored : ""}</td>
-          </tr>
-          <tr>
-            <td>Bonus</td>
-            <td>{upperBonusScored ? upperBonusScored : ""}</td>
-          </tr>
-          <tr>
-            <td>Upper Total</td>
-            <td>{grandTotalUpperScored ? grandTotalUpperScored : ""}</td>
-          </tr>
+          <BonusTotalRow title={"Total"} value={upperTotalScored} />
+          <BonusTotalRow title={"Bonus"} value={upperBonusScored} />
+          <BonusTotalRow title={"Upper Total"} value={grandTotalUpperScored} />
         </tbody>
       </table>
       <h3>Lower</h3>
@@ -89,18 +80,12 @@ const ScoreCard = () => {
             yahtzeeScoreCount={yahtzeeScoreCount}
             yahtzeeIsClickable={yahtzeeIsClickable}
           />
-          <tr>
-            <td>Yahtzee bonus</td>
-            <td>{yahtzeeBonusStars ? yahtzeeBonusStars : ""}</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>{lowerTotalScored ? lowerTotalScored : ""}</td>
-          </tr>
-          <tr>
-            <td>Game Grand Total</td>
-            <td>{grandTotalGameScored ? grandTotalGameScored : ""}</td>
-          </tr>
+          <BonusTotalRow title={"Yahtzee bonus"} value={yahtzeeBonusStars} />
+          <BonusTotalRow title={"Total"} value={lowerTotalScored} />
+          <BonusTotalRow
+            title={"Game Grand Total"}
+            value={grandTotalGameScored}
+          />
         </tbody>
       </table>
     </div>

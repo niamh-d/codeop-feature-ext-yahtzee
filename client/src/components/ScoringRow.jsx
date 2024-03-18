@@ -12,6 +12,7 @@ const ScoringRow = ({
   const [isScored, setIsScored] = useState(false);
 
   useEffect(() => {
+    if (!isScored) return;
     setIsScored(false);
   }, [countGame]);
 
