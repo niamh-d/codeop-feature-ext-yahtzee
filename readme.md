@@ -14,14 +14,15 @@ I have been asked by my PM to build upon code already written by a collegue.
 
 Criteria/Constraints:
 
-- Maintain aesthetic as much as possible while adding required features and with (below) design inspiration in mind
-- Style with vanilla CSS (no external libraries or frameworks)
+- Maintain aesthetic as much as possible while adding required new features and with (below) design inspiration in mind
+- Style with vanilla CSS as much as possible (no or minimal external libraries or frameworks)
+- Maintain dice roll animation
 
-### Required features
+### Required new features
 
-- Full Yahtzee game logic
-- Scoreboard
-- Saving user scores to backend
+- Full Yahtzee game logic (DONE)
+- Scoreboard (DONE)
+- Saving user scores to backend (TO DO)
 
 If time allows:
 
@@ -40,7 +41,7 @@ Layout example with scoreboard from [link](https://cardgames.io/yahtzee/).
 
 ![Target page layout example](imgs/layout-example.png)
 
-### Example of Scorboard
+### Example of Scoreboard
 
 ![Example of Yahtzee scoreboard](imgs/scoreboard.png)
 
