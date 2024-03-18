@@ -88,7 +88,7 @@ export default function reducer(state, action) {
       };
     }
     case "SET_SCORING_CONDITION_NOT_SELECTED":
-      return { ...state, isScoreable: true, conditionIsSelected: false };
+      return { ...state, isScoreable: true, scoringConditionIsSelected: false };
     case "SCORING_CONDITION_IS_SELECTED":
       return {
         ...state,
@@ -97,7 +97,7 @@ export default function reducer(state, action) {
           countRolled: 0,
           countRound: state.counts.countRound + 1,
         },
-        conditionIsSelected: true,
+        scoringConditionIsSelected: true,
         dice: {
           rolledDice: [],
           heldDice: [],
