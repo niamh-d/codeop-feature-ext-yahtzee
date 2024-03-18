@@ -1,0 +1,18 @@
+.signup {
+  height: 97vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.signup-heading-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.signup-heading {
+  font-size: 3rem;
+}
