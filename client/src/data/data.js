@@ -25,18 +25,22 @@ const scoringCells = {
 };
 
 export const initialState = {
-  countGame: 1,
+  counts: {
+    countGame: 1,
+    countRolled: 0,
+    countRound: 0,
+  },
   yahtzee: {
     yahtzeeIsClickable: false,
     yahtzeeScoreCount: 0,
   },
   gameIsEnded: false,
   isScoreable: false,
-  rolledDice: [],
-  diceToScore: [],
-  heldDice: [],
-  countRolled: 0,
-  countRound: 0,
+  dice: {
+    rolledDice: [],
+    diceToScore: [],
+    heldDice: [],
+  },
   scoringConditionIsSelected: true,
   scoredConditions: {
     upper: [],

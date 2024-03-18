@@ -3,15 +3,15 @@ import { initialState } from "../data/data";
 export default function reducer(state, action) {
   switch (action.type) {
     case "SET_ROLLED_DICE":
-      return { ...state, rolledDice: action.payload };
+      return { ...state, dice: { ...state.dice, rolledDice: action.payload } };
     case "SET_HELD_DICE":
-      return { ...state, heldDice: action.payload };
+      return { ...state, dice: { ...state.dice, heldDice: action.payload } };
     case "SET_SCORED_DICE":
       return {
         ...state,
         isScoreable: true,
-        yahtzeeIsClickable: true,
-        diceToScore: action.payload,
+        yahtzee: { ...state.yahtzee, yahtzeeIsClickable: true },
+        dice: { ...state.dice, diceToScore: action.payload },
       };
     case "SET_SCORED_CONDITIONS_ARRAY_UPPER":
       return {
@@ -89,21 +89,30 @@ export default function reducer(state, action) {
     case "SCORING_CONDITION_IS_SELECTED":
       return {
         ...state,
-        countRolled: 0,
-        countRound: state.countRound + 1,
+        counts: {
+          ...state.counts,
+          countRolled: 0,
+          countRound: state.countRound + 1,
+        },
         conditionIsSelected: true,
-        rolledDice: [],
-        heldDice: [],
-        diceToScore: [],
+        dice: {
+          rolledDice: [],
+          heldDice: [],
+          diceToScore: [],
+        },
         isScoreable: false,
-        yahtzeeIsClickable: false,
+        yahtzee: { ...state.yahtzee, yahtzeeIsClickable: false },
       };
     case "END_GAME":
       return { ...state, gameIsEnded: true };
     case "NEW_GAME":
       return {
         ...initialState,
-        countGame: state.countGame + 1,
+        counts: {
+          countGame: state.countGame + 1,
+          countRound: 0,
+          countRolled: 0,
+        },
       };
     default:
       throw new Error("Unknown action type");

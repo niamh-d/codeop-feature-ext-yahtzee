@@ -1,5 +1,4 @@
 const YahtzeeScoringRow = ({
-  conditionName,
   score,
   handler,
   yahtzeeScoreCount,
@@ -11,7 +10,7 @@ const YahtzeeScoringRow = ({
     if (!yahtzeeIsClickable) return;
     if (score === 0) return;
 
-    handler(conditionName);
+    handler("yahtzee");
   };
 
   return (

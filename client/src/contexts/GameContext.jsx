@@ -23,25 +23,22 @@ function GameProvider({ children }) {
   const [
     {
       gameIsEnded,
-      rolledDice,
-      heldDice,
-      diceToScore,
+      dice,
       displayedScoringCells,
       scoredConditions,
       scoredCells,
       scoredTotalsAndBonuses,
       scoringConditionIsSelected,
-      countRolled,
-      countRound,
       isScoreable,
       yahtzee,
-      countGame,
+      counts,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
 
+  const { rolledDice, heldDice, diceToScore } = dice;
+  const { countRolled, countRound } = counts;
   const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
-
   const { TOTAL_NUM_DICE, NUM_ROUNDS, NUM_ROLLS } = gameSettings;
 
   // SET-UP AND SCORED CONDITION NAMES AND SCORES
@@ -79,7 +76,9 @@ function GameProvider({ children }) {
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
     const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
-    const diceToScore = [...heldDice, ...rolledNewDice];
+    // const diceToScore = [...heldDice, ...rolledNewDice];
+
+    const diceToScore = [5, 5, 5, 5, 5];
 
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
@@ -372,9 +371,8 @@ function GameProvider({ children }) {
         scoringConditionIsSelected,
         gameIsEnded,
         isScoreable,
-        yahtzeeScoreCount,
-        yahtzeeIsClickable,
-        countGame,
+        yahtzee,
+        counts,
       }}
     >
       {children}

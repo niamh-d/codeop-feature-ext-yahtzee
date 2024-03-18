@@ -5,11 +5,14 @@ import ControllersBox from "./ControllersBox";
 import { useGame } from "../contexts/GameContext";
 
 const Game = () => {
-  const { countGame } = useGame();
+  const { counts } = useGame();
+  const { countGame, countRolled, countRound } = counts;
 
   return (
     <div>
-      <h2>Game {countGame}</h2>
+      <h2>
+        Game {countGame} – Round {countRound + 1} (Roll {countRolled + 1})
+      </h2>
       <ControllersBox />
       <div className="container-game">
         <DiceRollingContainer />

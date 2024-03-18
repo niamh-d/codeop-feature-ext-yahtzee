@@ -8,9 +8,8 @@ const ScoreCard = () => {
     displayedScoringCells,
     scoreConditionCell,
     scoredTotalsAndBonuses,
-    yahtzeeScoreCount,
     isScoreable,
-    yahtzeeIsClickable,
+    yahtzee,
     countGame,
   } = useGame();
 
@@ -22,6 +21,12 @@ const ScoreCard = () => {
     lowerTotalScored,
     grandTotalGameScored,
   } = scoredTotalsAndBonuses;
+
+  const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
+
+  const yahtzeeBonusStars = "*".repeat(
+    (yahtzeeScoreCount <= 0 ? 1 : yahtzeeScoreCount) - 1
+  );
 
   return (
     <div>
@@ -86,7 +91,7 @@ const ScoreCard = () => {
           />
           <tr>
             <td>Yahtzee bonus</td>
-            <td>{yahtzeeBonusScored ? yahtzeeBonusScored : ""}</td>
+            <td>{yahtzeeBonusStars ? yahtzeeBonusStars : ""}</td>
           </tr>
           <tr>
             <td>Total</td>
