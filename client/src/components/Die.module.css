@@ -1,0 +1,8 @@
+.die {
+  padding: 2rem;
+}
+
+.die__number {
+  font-size: 3rem;
+  cursor: pointer;
+}
