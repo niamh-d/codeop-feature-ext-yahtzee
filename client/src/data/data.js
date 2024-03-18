@@ -30,7 +30,7 @@ export const fixedScoresAndBonuses = {
   largeStraightValue: 40,
   yahtzeeValue: 50,
   upperTotalBonusValue: 35,
-  yahtzeeBonusvalue: 100,
+  yahtzeeBonusValue: 100,
 };
 
 export const initialState = {

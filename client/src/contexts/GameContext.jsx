@@ -76,14 +76,11 @@ function GameProvider({ children }) {
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
     const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
-    // const diceToScore = [...heldDice, ...rolledNewDice];
-
-    const diceToScore = [5, 5, 5, 5, 5];
+    const diceToScore = [...heldDice, ...rolledNewDice];
 
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
     dispatch({ type: "SET_SCORED_DICE", payload: diceToScore });
     dispatch({ type: "INCREMENT_COUNT_ROLL" });
-    console.log(countRolled, NUM_ROLLS);
     if (countRolled >= NUM_ROLLS - 1)
       dispatch({ type: "SET_SCORING_CONDITION_NOT_SELECTED" });
   }
@@ -132,30 +129,27 @@ function GameProvider({ children }) {
     scoreTotalsAndBonuses();
   }, [gameIsEnded]);
 
-  useEffect(() => {
-    const { grandTotalUpperScored, lowerTotalScored, grandTotalGameScored } =
-      scoredTotalsAndBonuses;
-    if (!grandTotalUpperScored && !lowerTotalScored) return;
-    if (grandTotalGameScored) return;
+  function scoreTotalsAndBonuses() {
+    const upper = scoreUpperTotalsAndBonuses();
+    const lower = scoreLowerTotalsAndBonuses();
 
-    scoreGameTotal(grandTotalUpperScored, lowerTotalScored);
-  }, [scoredTotalsAndBonuses]);
+    const { grandTotalUpperScored } = upper;
+    const { lowerTotalScored } = lower;
+    const grandTotalGameScored = grandTotalUpperScored + lowerTotalScored;
 
-  function scoreGameTotal(upper, lower) {
-    const grandTotalGameScored = upper + lower;
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { grandTotalGameScored },
+      payload: { ...upper, ...lower, grandTotalGameScored },
     });
   }
 
-  function scoreTotalsAndBonuses() {
-    scoreUpperTotalsAndBonuses();
-    scoreLowerTotalsAndBonuses();
-  }
-
   function scoreUpperTotalsAndBonuses() {
-    if (!scoredConditionScoresUpper.length) return;
+    if (!scoredConditionScoresUpper.length)
+      return {
+        upperTotalScored: 0,
+        upperBonusScored: 0,
+        grandTotalUpperScored: 0,
+      };
 
     const upperTotalScored = sumUp(scoredConditionScoresUpper);
     let upperBonusScored = null;
@@ -166,25 +160,21 @@ function GameProvider({ children }) {
     }
     if (!upperBonusScored) grandTotalUpperScored = upperTotalScored;
 
-    dispatch({
-      type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { upperTotalScored, upperBonusScored, grandTotalUpperScored },
-    });
+    return { upperTotalScored, upperBonusScored, grandTotalUpperScored };
   }
 
   function scoreLowerTotalsAndBonuses() {
-    if (!scoredConditionScoresLower.length) return;
+    if (!scoredConditionScoresLower.length)
+      return { lowerTotalScored: 0, yahtzeeBonusScored: 0 };
 
     const { yahtzeeBonusValue } = fixedScoresAndBonuses;
+
     const yahtzeeBonusScored =
-      yahtzeeScoreCount > 1 ? yahtzeeScoreCount - 1 * yahtzeeBonusValue : 0;
+      yahtzeeScoreCount > 1 ? (yahtzeeScoreCount - 1) * yahtzeeBonusValue : 0;
     const lowerTotalScored =
       sumUp(scoredConditionScoresLower) + yahtzeeBonusScored;
 
-    dispatch({
-      type: "SET_TOTALS_AND_BONSUSES_CELLS",
-      payload: { lowerTotalScored, yahtzeeBonusScored },
-    });
+    return { lowerTotalScored, yahtzeeBonusScored };
   }
 
   // RESETTING DISPLAYED SCORING CELLS

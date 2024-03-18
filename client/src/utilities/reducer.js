@@ -62,7 +62,7 @@ export default function reducer(state, action) {
     case "YAHTZEE_IS_SCORED":
       return {
         ...state,
-        yahtzeeIsScored: true,
+        yahtzee: { ...state.yahtzee, yahtzeeIsScored: true },
       };
     case "INCREMENT_YAHTZEE_SCORE_COUNT":
       return {
@@ -77,7 +77,6 @@ export default function reducer(state, action) {
       return {
         ...state,
         scoredTotalsAndBonuses: {
-          ...state.scoredTotalsAndBonuses,
           ...action.payload,
         },
       };

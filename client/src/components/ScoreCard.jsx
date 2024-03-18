@@ -11,7 +11,7 @@ const ScoreCard = () => {
     scoredTotalsAndBonuses,
     isScoreable,
     yahtzee,
-    countGame,
+    counts,
   } = useGame();
 
   const {
@@ -22,6 +22,7 @@ const ScoreCard = () => {
     grandTotalGameScored,
   } = scoredTotalsAndBonuses;
 
+  const { countGame } = counts;
   const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
 
   const yahtzeeBonusStars = "*".repeat(
