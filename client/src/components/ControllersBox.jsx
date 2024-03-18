@@ -1,5 +1,7 @@
 import { useGame } from "../contexts/GameContext";
 
+import styles from "./ControllersBox.module.css";
+
 const ControllersBox = () => {
   const {
     rollDice,
@@ -10,26 +12,32 @@ const ControllersBox = () => {
   } = useGame();
 
   return (
-    <>
-      {gameIsEnded && <button onClick={newGame}>New game</button>}
+    <div className={styles["controllers-box"]}>
+      {gameIsEnded && (
+        <button className="btn btn-primary" onClick={newGame}>
+          New game
+        </button>
+      )}
       {!gameIsEnded && (
         <>
-          <button onClick={endGameEarly}>End game (early)</button>
+          <button className={styles["btn-end-early"]} onClick={endGameEarly}>
+            End game (early)
+          </button>
           <div>
             {scoringConditionIsSelected && (
-              <button className="btn__roll" onClick={rollDice}>
+              <button className="btn btn-primary" onClick={rollDice}>
                 Roll dice
               </button>
             )}
             {!scoringConditionIsSelected && (
-              <button disabled className="btn__roll">
+              <button disabled className="btn btn-secondary">
                 Select a scoring condition
               </button>
             )}
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

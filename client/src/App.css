@@ -1,1 +1,40 @@
+.game-page {
+  padding: 5rem;
+}
 
+.container-game {
+  max-width: 100rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5rem;
+}
+
+th {
+  font-weight: 500;
+}
+
+th,
+td {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.scoreable {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.scored {
+  background-color: #444;
+  color: aliceblue;
+  font-weight: 600;
+}
+
+table {
+  max-width: 30rem;
+}

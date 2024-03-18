@@ -3,10 +3,10 @@ import Game from "../components/Game";
 
 const GamePage = () => {
   return (
-    <>
+    <div className="game-page">
       <Header />
       <Game />
-    </>
+    </div>
   );
 };
 
