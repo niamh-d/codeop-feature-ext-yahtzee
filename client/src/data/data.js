@@ -61,8 +61,9 @@ export const initialState = {
     upperTotalScored: null,
     upperBonusScored: null,
     grandTotalUpperScored: null,
-    yahtzeeBonusScored: null,
     lowerTotalScored: null,
+    yahtzeeBonusScored: null,
+    grandLowerTotalScored: null,
     grandTotalGameScored: null,
   },
 };

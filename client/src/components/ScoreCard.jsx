@@ -19,6 +19,7 @@ const ScoreCard = () => {
     upperBonusScored,
     grandTotalUpperScored,
     lowerTotalScored,
+    grandLowerTotalScored,
     grandTotalGameScored,
   } = scoredTotalsAndBonuses;
 
@@ -51,9 +52,12 @@ const ScoreCard = () => {
               countGame={countGame}
             />
           ))}
-          <BonusTotalRow title={"Total"} value={upperTotalScored} />
-          <BonusTotalRow title={"Bonus"} value={upperBonusScored} />
-          <BonusTotalRow title={"Upper Total"} value={grandTotalUpperScored} />
+          <BonusTotalRow title={"Upper Total"} value={upperTotalScored} />
+          <BonusTotalRow title={"Upper Bonus"} value={upperBonusScored} />
+          <BonusTotalRow
+            title={"Upper Grand Total"}
+            value={grandTotalUpperScored}
+          />
         </tbody>
       </table>
       <h3>Lower</h3>
@@ -81,8 +85,12 @@ const ScoreCard = () => {
             yahtzeeScoreCount={yahtzeeScoreCount}
             yahtzeeIsClickable={yahtzeeIsClickable}
           />
+          <BonusTotalRow title={"Lower Total"} value={lowerTotalScored} />
           <BonusTotalRow title={"Yahtzee bonus"} value={yahtzeeBonusStars} />
-          <BonusTotalRow title={"Total"} value={lowerTotalScored} />
+          <BonusTotalRow
+            title={"Lower Grand Total"}
+            value={grandLowerTotalScored}
+          />
           <BonusTotalRow
             title={"Game Grand Total"}
             value={grandTotalGameScored}

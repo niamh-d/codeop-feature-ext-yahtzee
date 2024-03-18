@@ -24,8 +24,27 @@ function SessionProvider({ children }) {
     dispatch({ type: "SET_CURRENT_USER", payload: loggedInUser });
   }, [loggedInUser]);
 
+  async function savePlayDetails(play) {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(play),
+      };
+      const res = await fetch("/api/plays", options);
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
-    <SessionContext.Provider value={{}}>{children}</SessionContext.Provider>
+    <SessionContext.Provider value={{ savePlayDetails }}>
+      {children}
+    </SessionContext.Provider>
   );
 }
 

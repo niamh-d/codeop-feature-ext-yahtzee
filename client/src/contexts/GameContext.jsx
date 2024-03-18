@@ -3,6 +3,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useReducer } from "react";
 
+import { useSession } from "./SessionContext";
+
 import {
   initialState,
   fixedScoresAndBonuses,
@@ -35,6 +37,8 @@ function GameProvider({ children }) {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  const { savePlayDetails } = useSession();
 
   const { rolledDice, heldDice, diceToScore } = dice;
   const { countRolled, countRound } = counts;
@@ -121,6 +125,29 @@ function GameProvider({ children }) {
     dispatch({ type: "NEW_GAME" });
   }
 
+  useEffect(() => {
+    const { grandTotalGameScored, upperTotalScored, lowerTotalScored } =
+      scoredTotalsAndBonuses;
+
+    const { countRound, countGame } = counts;
+
+    const { yahtzeeScoreCount } = yahtzee;
+
+    if (!grandTotalGameScored) return;
+
+    const gameDetails = {
+      grandTotalGameScored,
+      upperTotalScored,
+      lowerTotalScored,
+      countRound: countRound - 1,
+      countGame,
+      yahtzeeScoreCount,
+      gameComplete: countRound === NUM_ROUNDS - 1 ? 1 : 0,
+    };
+
+    savePlayDetails(gameDetails);
+  }, [scoredTotalsAndBonuses]);
+
   // END GAME SCORING
 
   useEffect(() => {
@@ -134,8 +161,8 @@ function GameProvider({ children }) {
     const lower = scoreLowerTotalsAndBonuses();
 
     const { grandTotalUpperScored } = upper;
-    const { lowerTotalScored } = lower;
-    const grandTotalGameScored = grandTotalUpperScored + lowerTotalScored;
+    const { grandLowerTotalScored } = lower;
+    const grandTotalGameScored = grandTotalUpperScored + grandLowerTotalScored;
 
     dispatch({
       type: "SET_TOTALS_AND_BONSUSES_CELLS",
@@ -165,16 +192,20 @@ function GameProvider({ children }) {
 
   function scoreLowerTotalsAndBonuses() {
     if (!scoredConditionScoresLower.length)
-      return { lowerTotalScored: 0, yahtzeeBonusScored: 0 };
+      return {
+        lowerTotalScored: 0,
+        yahtzeeBonusScored: 0,
+        grandLowerTotalScored: 0,
+      };
 
     const { yahtzeeBonusValue } = fixedScoresAndBonuses;
 
     const yahtzeeBonusScored =
       yahtzeeScoreCount > 1 ? (yahtzeeScoreCount - 1) * yahtzeeBonusValue : 0;
-    const lowerTotalScored =
-      sumUp(scoredConditionScoresLower) + yahtzeeBonusScored;
+    const lowerTotalScored = sumUp(scoredConditionScoresLower);
+    const grandLowerTotalScored = lowerTotalScored + yahtzeeBonusScored;
 
-    return { lowerTotalScored, yahtzeeBonusScored };
+    return { lowerTotalScored, yahtzeeBonusScored, grandLowerTotalScored };
   }
 
   // RESETTING DISPLAYED SCORING CELLS
