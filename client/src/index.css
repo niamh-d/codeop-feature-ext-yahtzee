@@ -32,21 +32,21 @@ p {
 }
 
 .btn-primary {
-  background-color: var(--pico-color-orange-400);
-  transition: 1s ease-out;
-}
-
-.btn-primary:hover {
-  background-color: var(--pico-color-orange-350);
-}
-
-.btn-secondary {
   background-color: var(--pico-color-amber-200);
   transition: 1s ease-out;
 }
 
-.btn-secondary:hover {
+.btn-primary:hover {
   background-color: var(--pico-color-amber-150);
+}
+
+.btn-secondary {
+  background-color: var(--pico-color-amber-150);
+  transition: 1s ease-out;
+}
+
+.btn-secondary:hover {
+  background-color: var(--pico-color-amber-100);
   transform: scale(1.1);
 }
 

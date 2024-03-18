@@ -16,7 +16,7 @@ export default function Homepage() {
             </p>
           </div>
           <div>
-            <h2 className={styles["cta-text"]}>Gǝt rolling!</h2>
+            <h2 className={styles["cta-text"]}>Gǝt rolling now!</h2>
             <div className={styles["button-box"]}>
               <button className="btn btn-primary">
                 <Link to="/signup">Create your free account</Link>
