@@ -1,9 +1,3 @@
-export const gameSettings = {
-  TOTAL_NUM_DICE: 5,
-  NUM_ROUNDS: 13,
-  NUM_ROLLS: 3,
-};
-
 const scoringCells = {
   upper: {
     aces: 0,
@@ -24,24 +18,39 @@ const scoringCells = {
   },
 };
 
+export const gameSettings = {
+  TOTAL_NUM_DICE: 5,
+  NUM_ROUNDS: 13,
+  NUM_ROLLS: 3,
+};
+
+export const fixedScoresAndBonuses = {
+  fullHouseValue: 25,
+  smallStraightValue: 30,
+  largeStraightValue: 40,
+  yahtzeeValue: 50,
+  upperTotalBonusValue: 35,
+  yahtzeeBonusvalue: 100,
+};
+
 export const initialState = {
+  gameIsEnded: false,
+  isScoreable: false,
+  scoringConditionIsSelected: true,
   counts: {
     countGame: 1,
     countRolled: 0,
     countRound: 0,
   },
-  yahtzee: {
-    yahtzeeIsClickable: false,
-    yahtzeeScoreCount: 0,
-  },
-  gameIsEnded: false,
-  isScoreable: false,
   dice: {
     rolledDice: [],
     diceToScore: [],
     heldDice: [],
   },
-  scoringConditionIsSelected: true,
+  yahtzee: {
+    yahtzeeIsClickable: false,
+    yahtzeeScoreCount: 0,
+  },
   scoredConditions: {
     upper: [],
     lower: [],
@@ -56,13 +65,4 @@ export const initialState = {
     lowerTotalScored: null,
     grandTotalGameScored: null,
   },
-};
-
-export const fixedScoresAndBonuses = {
-  fullHouseValue: 25,
-  smallStraightValue: 30,
-  largeStraightValue: 40,
-  yahtzeeValue: 50,
-  upperTotalBonusValue: 35,
-  yahtzeeBonusvalue: 100,
 };

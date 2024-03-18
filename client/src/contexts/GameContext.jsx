@@ -38,7 +38,7 @@ function GameProvider({ children }) {
 
   const { rolledDice, heldDice, diceToScore } = dice;
   const { countRolled, countRound } = counts;
-  const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
+  const { yahtzeeScoreCount } = yahtzee;
   const { TOTAL_NUM_DICE, NUM_ROUNDS, NUM_ROLLS } = gameSettings;
 
   // SET-UP AND SCORED CONDITION NAMES AND SCORES

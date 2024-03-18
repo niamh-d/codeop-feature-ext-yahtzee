@@ -82,7 +82,10 @@ export default function reducer(state, action) {
         },
       };
     case "INCREMENT_COUNT_ROLL": {
-      return { ...state, countRolled: state.countRolled + 1 };
+      return {
+        ...state,
+        counts: { ...state.counts, countRolled: state.counts.countRolled + 1 },
+      };
     }
     case "SET_SCORING_CONDITION_NOT_SELECTED":
       return { ...state, isScoreable: true, conditionIsSelected: false };
@@ -92,7 +95,7 @@ export default function reducer(state, action) {
         counts: {
           ...state.counts,
           countRolled: 0,
-          countRound: state.countRound + 1,
+          countRound: state.counts.countRound + 1,
         },
         conditionIsSelected: true,
         dice: {
@@ -109,7 +112,7 @@ export default function reducer(state, action) {
       return {
         ...initialState,
         counts: {
-          countGame: state.countGame + 1,
+          countGame: state.counts.countGame + 1,
           countRound: 0,
           countRolled: 0,
         },
