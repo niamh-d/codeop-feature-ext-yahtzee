@@ -12,47 +12,34 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "LOGIN":
-      return {
-        ...state,
-        isAuthenticated: true,
-        credentialsAreInvalid: false,
-      };
     case "SET_LOGGEDIN_USER":
       return { ...state, loggedInUser: action.payload };
-    case "INVALID_CREDENTIALS":
-      return { ...state, credentialsAreInvalid: true };
-    case "LOGOUT":
-      return { ...state, isAuthenticated: false };
     default:
       throw new Error("Unknown action.");
   }
 }
 
 function AuthProvider({ children }) {
-  const [{ isAuthenticated, credentialsAreInvalid, loggedInUser }, dispatch] =
-    useReducer(reducer, initialState);
+  const [{ loggedInUser }, dispatch] = useReducer(reducer, initialState);
 
-  async function login(email, password) {
+  const login = async (credentials) => {
     try {
-      const res = await fetch(
-        `/api/users/login?email=${email}&password=${password}`
-      );
-      const data = await res.json();
-      const user = data[0];
-      if (user) {
-        dispatch({ type: "SET_LOGGEDIN_USER", payload: user });
-        dispatch({ type: "LOGIN" });
-      } else dispatch({ type: "INVALID_CREDENTIALS" });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      };
+      const results = await fetch("/api/login", options);
+      const data = await results.json();
 
-  function logout() {
-    dispatch({ type: "LOGOUT" });
-    dispatch({ type: "SET_LOGGEDIN_USER", payload: null });
-  }
+      if (data) {
+        dispatch({ type: "SET_LOGGEDIN_USER", payload: data.userDetails });
+        localStorage.setItem("token", data.token);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   async function signup(details) {
     try {
@@ -74,12 +61,9 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
-        credentialsAreInvalid,
         login,
-        logout,
-        signup,
         loggedInUser,
+        signup,
       }}
     >
       {children}
