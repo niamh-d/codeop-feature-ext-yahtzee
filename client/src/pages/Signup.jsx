@@ -8,6 +8,7 @@ import styles from "./Signup.module.css";
 const Signup = () => {
   const firstNameInputRef = useRef();
   const lastNameInputRef = useRef();
+  const usernameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -21,6 +22,7 @@ const Signup = () => {
     const userDetails = {
       firstName: firstNameInputRef.current.value,
       lastName: lastNameInputRef.current.value,
+      username: usernameInputRef.current.value,
       email: emailInputRef.current.value,
       password: passwordInputRef.current.value,
     };
@@ -42,14 +44,16 @@ const Signup = () => {
           </button>
         </div>
         <form onSubmit={submitHandler}>
-          <label htmlFor="First name">First name</label>
-          <input type="text" ref={firstNameInputRef} />
-          <label htmlFor="Last name">Last name</label>
-          <input type="text" ref={lastNameInputRef} />
-          <label htmlFor="Email">Email</label>
-          <input type="email" ref={emailInputRef} />
-          <label htmlFor="Password">Password</label>
-          <input type="password" ref={passwordInputRef} />
+          <label htmlFor="firstname">First name</label>
+          <input id="firstname" type="text" ref={firstNameInputRef} />
+          <label htmlFor="lastname">Last name</label>
+          <input id="lastname" type="text" ref={lastNameInputRef} />
+          <label htmlFor="username">Username</label>
+          <input id="username" type="username" ref={usernameInputRef} />
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" ref={emailInputRef} />
+          <label htmlFor="password">Password</label>
+          <input id="password" type="password" ref={passwordInputRef} />
         </form>
       </section>
     </main>
