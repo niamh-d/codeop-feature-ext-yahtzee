@@ -112,7 +112,7 @@ export default function reducer(state, action) {
         ...initialState,
         counts: {
           countGame: state.counts.countGame + 1,
-          countRound: 0,
+          countRound: 1,
           countRolled: 0,
         },
       };
