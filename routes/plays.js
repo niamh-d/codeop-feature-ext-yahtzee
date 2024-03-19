@@ -13,15 +13,22 @@ router.post("/", async function (req, res, next) {
       countGame,
       yahtzeeScoreCount,
       gameComplete,
+      userId,
     } = body;
+
+    const timestamp = new Date().toISOString();
+    const [date, time] = timestamp.split("T");
+    const timeClean = time.split(".")[0];
+
+    const timestampStr = `${date} ${timeClean}`;
 
     await db(`INSERT INTO plays(date_played, user_id, game_number, total_score_game, yatzee_score_count, total_upper_wo_bonus, total_lower_wo_bonus, rounds_played, full_game)
     VALUES
-        ("2024-03-10 13:01:01", 10011, ${countGame}, ${grandTotalGameScored}, ${yahtzeeScoreCount}, ${upperTotalScored}, ${lowerTotalScored}, ${countRound}, ${gameComplete});`);
+        ('${timestampStr}', ${userId}, ${countGame}, ${grandTotalGameScored}, ${yahtzeeScoreCount}, ${upperTotalScored}, ${lowerTotalScored}, ${countRound}, ${gameComplete});`);
 
-    const results = db(`SELECT * FROM plays WHERE user_id = 10011;`);
+    // const results = db(`SELECT * FROM plays WHERE user_id = ${userId};`);
 
-    res.send(results.data);
+    res.send({ message: "Play saved successfully!" });
   } catch (err) {
     res.status(500).send(err.message);
   }

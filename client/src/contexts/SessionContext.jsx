@@ -4,8 +4,10 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 
 const SessionContext = createContext();
 
+import { useAuth } from "./AuthContext";
+
 const initialState = {
-  loggedInUser: null,
+  currentUser: null,
 };
 
 function reducer(state, action) {
@@ -18,14 +20,20 @@ function reducer(state, action) {
 }
 
 function SessionProvider({ children }) {
-  const [{ loggedInUser }, dispatch] = useReducer(reducer, initialState);
+  const [{ currentUser }, dispatch] = useReducer(reducer, initialState);
+
+  const { loggedInUser } = useAuth();
 
   useEffect(() => {
-    dispatch({ type: "SET_CURRENT_USER", payload: loggedInUser });
+    if (loggedInUser)
+      dispatch({ type: "SET_CURRENT_USER", payload: loggedInUser });
+    if (!loggedInUser) dispatch({ type: "SET_CURRENT_USER", payload: null });
   }, [loggedInUser]);
 
   async function savePlayDetails(play) {
     try {
+      play.userId = currentUser.id;
+
       const options = {
         method: "POST",
         headers: {
