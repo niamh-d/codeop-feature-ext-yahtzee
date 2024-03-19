@@ -20,12 +20,6 @@ function reducer(state, action) {
       };
     case "SET_LOGGEDIN_USER":
       return { ...state, loggedInUser: action.payload };
-    case "SIGNUP":
-      return {
-        ...state,
-        isAuthenticated: true,
-        credentialsAreInvalid: false,
-      };
     case "INVALID_CREDENTIALS":
       return { ...state, credentialsAreInvalid: true };
     case "LOGOUT":
@@ -60,8 +54,21 @@ function AuthProvider({ children }) {
     dispatch({ type: "SET_LOGGEDIN_USER", payload: null });
   }
 
-  function signup() {
-    dispatch({ type: "SIGNUP" });
+  async function signup(details) {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      };
+      const res = await fetch("/api/users", options);
+      const user = await res.json();
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
