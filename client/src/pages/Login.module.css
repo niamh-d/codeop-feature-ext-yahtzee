@@ -16,3 +16,7 @@
 .login-heading {
   font-size: 3rem;
 }
+
+.nonactive-label {
+  color: var(--pico-color-green-700);
+}
