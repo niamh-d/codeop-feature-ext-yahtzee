@@ -9,12 +9,12 @@ const BCRYPT_WORK_FACTOR = 12;
 
 router.post("/", async function (req, res, next) {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, username, password } = req.body;
 
     const hashedPW = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
-    await db(`INSERT INTO users(firstName, lastName, email, password)
-    VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPW}');`);
+    await db(`INSERT INTO users(firstName, lastName, email, username , password)
+    VALUES ('${firstName}', '${lastName}', '${email}', '${username}', '${hashedPW}');`);
 
     const results = await db(`SELECT * FROM users ORDER BY id DESC LIMIT 1;`);
 

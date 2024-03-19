@@ -4,8 +4,9 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
     `id` MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `firstName` VARCHAR(30) NOT NULL,
-    `lastName` VARCHAR(30) NOT NULL,
+    `firstname` VARCHAR(30) NOT NULL,
+    `lastname` VARCHAR(30) NOT NULL,
+    `username` VARCHAR(30) NOT NULL,
     `email` VARCHAR(30) NOT NULL,
     `password` VARCHAR(255) NOT NULL
 )ENGINE=INNODB AUTO_INCREMENT = 10011;
@@ -25,9 +26,9 @@ CREATE TABLE plays(
 
 )ENGINE=INNODB AUTO_INCREMENT = 20022;
 
-INSERT INTO users(firstName, lastName, email, password)
+INSERT INTO users(firstname, lastname, username, email, password)
 VALUES
-    ("Julie", "Andrews", "julie@email.com", "qwerty");
+    ("Julie", "Andrews", "julie001", "julie@email.com", "qwerty");
 
 
 INSERT INTO plays(date_played, user_id, game_number, total_score_game, yatzee_score_count, total_upper_wo_bonus, total_lower_wo_bonus, rounds_played, full_game)
