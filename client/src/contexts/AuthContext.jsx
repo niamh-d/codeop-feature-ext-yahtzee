@@ -35,6 +35,11 @@ function AuthProvider({ children }) {
     initialState
   );
 
+  function logout() {
+    dispatch({ type: "SET_IS_NOT_AUTHENTICATED" });
+    localStorage.clear();
+  }
+
   const login = async (credentials) => {
     try {
       const options = {
@@ -104,6 +109,7 @@ function AuthProvider({ children }) {
       value={{
         login,
         loggedInUser,
+        logout,
         signup,
         checkAuthentication,
         isAuthenticated,

@@ -1,5 +1,16 @@
 :root {
   font-family: "Inter", sans-serif;
+
+  /* COLORS */
+
+  --color-page: var(--pico-color-green-450);
+  --color-page-dark: var(--pico-color-green-700);
+  --color-text: var(--pico-color-sand-800);
+  --color-heading: var(--pico-color-amber-50);
+  --color-label: var(--pico-color-amber-50);
+  --color-button: var(--pico-color-amber-200);
+  --color-button-light: var(--pico-color-amber-150);
+  --color-button-lightest: var(--pico-color-amber-100);
 }
 
 * {
@@ -9,18 +20,18 @@
 }
 
 html {
-  background-color: var(--pico-color-green-450);
+  background-color: var(--color-page);
   scroll-behavior: smooth;
 }
 
 h1,
 h2,
 h3 {
-  color: var(--pico-color-amber-50);
+  color: var(--color-heading);
 }
 
 p {
-  color: var(--pico-color-sand-800);
+  color: var(--color-text);
 }
 
 .btn {
@@ -32,30 +43,30 @@ p {
 }
 
 .btn-primary {
-  background-color: var(--pico-color-amber-200);
+  background-color: var(--color-button);
   transition: 1s ease-out;
 }
 
 .btn-primary:hover {
-  background-color: var(--pico-color-amber-150);
+  background-color: var(--color-button-light);
 }
 
 .btn-secondary {
-  background-color: var(--pico-color-amber-150);
+  background-color: var(--color-button-light);
   transition: 1s ease-out;
 }
 
 .btn-secondary:hover {
-  background-color: var(--pico-color-amber-100);
+  background-color: var(--color-button-lightest);
   transform: scale(1.1);
 }
 
 a {
   text-decoration: none;
   font-weight: 600;
-  color: var(--pico-color-sand-800);
+  color: var(--color-text);
 }
 
 label {
-  color: var(--pico-color-amber-50);
+  color: var(color-label);
 }

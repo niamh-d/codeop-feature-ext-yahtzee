@@ -1,7 +1,16 @@
-import React from "react";
+import Header from "../components/Header";
 
 const PastPlays = () => {
-  return <div>PastPlays</div>;
+  return (
+    <>
+      <Header />
+      <main className="main">
+        <section>
+          <h1>PastPlays</h1>
+        </section>
+      </main>
+    </>
+  );
 };
 
 export default PastPlays;

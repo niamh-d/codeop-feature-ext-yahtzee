@@ -1,9 +1,31 @@
-import React from "react";
+import { NavLink } from "react-router-dom";
+
+import { useSession } from "../contexts/SessionContext";
+import { useAuth } from "../contexts/AuthContext";
+
+import styles from "./Header.module.css";
 
 const Header = () => {
+  const { currentUser } = useSession();
+  const { logout } = useAuth();
+
+  const clickHandler = () => logout();
+
   return (
-    <div>
-      <h1>Yahtzee</h1>
+    <div className={styles.header}>
+      <h1>Yahtzə!</h1>
+      <NavLink to="/scores">Your scores</NavLink>
+      <div className={styles["user-box"]}>
+        {currentUser && (
+          <div>
+            Hello,{" "}
+            <span className={styles.username}>{currentUser.username}</span>!
+          </div>
+        )}
+        <button className="btn btn-secondary" onClick={clickHandler}>
+          Log out
+        </button>
+      </div>
     </div>
   );
 };

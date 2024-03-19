@@ -5,14 +5,14 @@ import CountsBox from "./CountsBox";
 
 const Game = () => {
   return (
-    <div>
+    <main className="main">
       <CountsBox />
       <ControllersBox />
       <div className="container-game">
         <DiceRollingContainer />
         <ScoreCard />
       </div>
-    </div>
+    </main>
   );
 };
 
