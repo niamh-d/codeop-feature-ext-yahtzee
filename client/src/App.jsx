@@ -6,6 +6,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { SessionProvider } from "./contexts/SessionContext";
 
 // PAGES
+import ProtectedRoute from "./pages/ProtectedRoute";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -24,8 +25,22 @@ const App = () => {
             <Route index element={<Homepage />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="play" element={<GamePage />} />
-            <Route path="scores" element={<PastPlays />} />
+            <Route
+              path="play"
+              element={
+                <ProtectedRoute>
+                  <GamePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="scores"
+              element={
+                <ProtectedRoute>
+                  <PastPlays />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </GameProvider>

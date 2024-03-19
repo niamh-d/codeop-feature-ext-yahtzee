@@ -3,12 +3,12 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var router = express.Router();
 
+const supersecret = process.env.SUPERSECRET;
+
 const db = require("../model/helper");
 
 router.post("/", async (req, res) => {
   const { email, username, password } = req.body;
-
-  console.log(req.body);
 
   const identifierStr = email
     ? `email = '${email}'`
@@ -18,8 +18,6 @@ router.post("/", async (req, res) => {
     const results = await db(`SELECT * FROM users WHERE ${identifierStr};`);
     const user = results.data[0];
 
-    console.log(user);
-
     if (user) {
       const id = user.id;
 
@@ -27,14 +25,17 @@ router.post("/", async (req, res) => {
 
       if (!correctPassword) throw new Error("Incorrect password");
 
-      const token = jwt.sign({ id }, "shhhhuhhhh");
+      const token = jwt.sign({ userId: id }, supersecret);
 
-      const userDetails = {
-        firstName: user.firstname,
-        id,
-      };
-
-      res.send({ token, userDetails });
+      res.send({
+        token,
+        user: {
+          id: user.id,
+          firstName: user.firstname,
+          email: user.email,
+          username: user.username,
+        },
+      });
     } else {
       throw new Error("User does not exist");
     }

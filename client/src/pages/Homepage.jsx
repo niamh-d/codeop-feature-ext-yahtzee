@@ -1,9 +1,19 @@
+import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import styles from "./Homepage.module.css";
 
+import { useAuth } from "../contexts/AuthContext";
+
 export default function Homepage() {
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/play", { replace: true });
+  }, [isAuthenticated]);
 
   const loginHandler = () => navigate("/login");
   const signupHandler = () => navigate("/signup");

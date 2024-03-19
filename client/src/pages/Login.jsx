@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -7,9 +7,15 @@ import styles from "./Login.module.css";
 import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, checkAuthentication, isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/play", { replace: true });
+
+    checkAuthentication();
+  }, [isAuthenticated]);
 
   const [useEmail, setUseEmail] = useState(true);
 

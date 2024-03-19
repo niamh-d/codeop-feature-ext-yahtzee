@@ -12,6 +12,16 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_IS_NOT_AUTHENTICATED":
+      return {
+        ...state,
+        isAuthenticated: false,
+      };
+    case "SET_IS_AUTHENTICATED":
+      return {
+        ...state,
+        isAuthenticated: true,
+      };
     case "SET_LOGGEDIN_USER":
       return { ...state, loggedInUser: action.payload };
     default:
@@ -20,7 +30,10 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [{ loggedInUser }, dispatch] = useReducer(reducer, initialState);
+  const [{ loggedInUser, isAuthenticated }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const login = async (credentials) => {
     try {
@@ -32,14 +45,42 @@ function AuthProvider({ children }) {
       const results = await fetch("/api/login", options);
       const data = await results.json();
 
-      if (data) {
-        dispatch({ type: "SET_LOGGEDIN_USER", payload: data.userDetails });
+      if (data.user) {
+        dispatch({ type: "SET_LOGGEDIN_USER", payload: data.user });
+        dispatch({ type: "SET_IS_AUTHENTICATED" });
         localStorage.setItem("token", data.token);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
+  async function checkAuthentication() {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) dispatch({ type: "SET_IS_NOT_AUTHENTICATED" });
+
+      if (token) {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const res = await fetch("/api/users", options);
+        const user = await res.json();
+
+        if (user) {
+          dispatch({ type: "SET_IS_AUTHENTICATED" });
+          dispatch({ type: "SET_LOGGEDIN_USER", payload: user });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function signup(details) {
     try {
@@ -64,6 +105,8 @@ function AuthProvider({ children }) {
         login,
         loggedInUser,
         signup,
+        checkAuthentication,
+        isAuthenticated,
       }}
     >
       {children}
