@@ -241,10 +241,12 @@ function GameProvider({ children }) {
       (condition) => !scoredConditionNamesUpper.includes(condition)
     );
 
-    applicableConditionsUpper.forEach((condition, i) => {
+    conditionNamesUpper.forEach((condition, i) => {
       const length = filterDiceAndCalculateLength(dice, i + 1);
 
-      if (length) scores[condition] = length * (i + 1);
+      if (length && applicableConditionsUpper.includes(condition)) {
+        scores[condition] = length * (i + 1);
+      }
     });
 
     return scores;
