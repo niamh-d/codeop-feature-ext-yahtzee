@@ -279,7 +279,6 @@ function GameProvider({ children }) {
     }
 
     function checkForStraights(dice) {
-      dice = [...new Set(dice)];
       const sortedRolledDiceStr = renderSortedRolledDiceStr(dice);
 
       if (
@@ -326,7 +325,7 @@ function GameProvider({ children }) {
       checkForThreeOfAKind(dice);
     }
 
-    checkForStraights(dice);
+    checkForStraights(uniques);
 
     return scores;
   }
