@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
+
 import styles from "./Die.module.css";
 
-const diceStylesStrs = {
+const diceStyles = {
   1: { transform: "rotateX(0deg) rotateY(0deg)" },
   2: { transform: "rotateX(0deg) rotateY(0deg)" },
   3: { transform: "rotateX(0deg) rotateY(90deg)" },
@@ -9,13 +11,24 @@ const diceStylesStrs = {
   6: { transform: "rotateX(180deg) rotateY(0deg)" },
 };
 
-const Die = ({ num, id, handler }) => {
+const Die = ({ num, id, handler, rollAnimation = true }) => {
+  const [diceStyle, setDiceStyle] = useState({});
+
+  useEffect(() => {
+    if (!rollAnimation) {
+      setDiceStyle({ animation: "none", transform: diceStyles[num].transform });
+      return;
+    }
+
+    setDiceStyle({ animation: "rolling 3s" });
+
+    setTimeout(() => {
+      setDiceStyle({ animation: "none", transform: diceStyles[num].transform });
+    }, 1050);
+  }, [rollAnimation]);
+
   return (
-    <div
-      className={styles.die}
-      style={diceStylesStrs[num]}
-      onClick={() => handler(id)}
-    >
+    <div className={styles.die} style={diceStyle} onClick={() => handler(id)}>
       <div className={`${styles.face} ${styles.front}`}></div>
       <div className={`${styles.face} ${styles.back}`}></div>
       <div className={`${styles.face} ${styles.top}`}></div>

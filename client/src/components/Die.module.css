@@ -1,4 +1,5 @@
 .die {
+  cursor: pointer;
   display: block;
   position: relative;
   margin: 5px;
@@ -6,17 +7,6 @@
   height: 100px;
   transform-style: preserve-3d;
   transition: 1s ease;
-}
-
-.die__number {
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-@keyframes rolling {
-  50% {
-    transform: rotateX(455deg) rotateY(455deg);
-  }
 }
 
 .face {

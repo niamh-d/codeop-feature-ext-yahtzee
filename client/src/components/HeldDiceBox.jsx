@@ -10,7 +10,13 @@ const HeldDiceBox = () => {
   return (
     <div className={styles["dice-row"]}>
       {heldDice.map((num, i) => (
-        <Die key={i} num={num} id={i} handler={returnDie} />
+        <Die
+          key={i}
+          num={num}
+          id={i}
+          handler={returnDie}
+          rollAnimation={false}
+        />
       ))}
     </div>
   );
