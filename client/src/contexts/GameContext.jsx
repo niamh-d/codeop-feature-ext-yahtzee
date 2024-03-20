@@ -142,7 +142,7 @@ function GameProvider({ children }) {
       countRound: countRound - 1,
       countGame,
       yahtzeeScoreCount,
-      gameComplete: countRound === NUM_ROUNDS - 1 ? 1 : 0,
+      gameComplete: countRound === NUM_ROUNDS + 1 ? 1 : 0,
     };
 
     savePlayDetails(gameDetails);

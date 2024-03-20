@@ -36,8 +36,10 @@ VALUES
 
 INSERT INTO plays(date_played, user_id, game_number, total_score_game, yahtzee_score_count, total_upper_wo_bonus, total_lower_wo_bonus, rounds_played, full_game)
 VALUES
-    ("2024-03-10 13:01:01", 10011, 1, 116, 0, 26, 90, 5, '0'),
-    ("2024-03-10 13:01:01", 10011, 2, 303, 1, 69, 199, 13, '1');
+    ('2024-03-19 15:38:16', 10014, 1, 147, 1, 19, 128, 7, 0),
+    ('2024-03-20 11:47:31', 10011, 1, 227, 1, 48, 179, 13, 1),
+    ('2024-03-20 11:59:31', 10011, 2, 112, 0, 16, 96, 9, 0),
+    ("2024-03-20 13:01:01", 10011, 1, 303, 1, 69, 199, 13, 1);
 
 ALTER TABLE
     `plays` ADD CONSTRAINT `plays_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `users`(`id`);
