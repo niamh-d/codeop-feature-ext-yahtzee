@@ -30,8 +30,8 @@ td {
 }
 
 .scored {
-  background-color: #444;
-  color: aliceblue;
+  background-color: var(--color-page-dark);
+  color: var(--color-label);
   font-weight: 600;
 }
 

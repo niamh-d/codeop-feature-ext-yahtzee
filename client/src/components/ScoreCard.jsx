@@ -26,7 +26,7 @@ const ScoreCard = () => {
   const { countGame } = counts;
   const { yahtzeeIsClickable, yahtzeeScoreCount } = yahtzee;
 
-  const yahtzeeBonusStars = "*".repeat(
+  const yahtzeeBonusStars = "⭐️".repeat(
     (yahtzeeScoreCount <= 0 ? 1 : yahtzeeScoreCount) - 1
   );
 

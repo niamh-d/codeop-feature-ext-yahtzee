@@ -26,7 +26,7 @@ const ControllersBox = () => {
           <div>
             {scoringConditionIsSelected && (
               <button className="btn btn-primary" onClick={rollDice}>
-                Roll dice
+                Roll 🎲
               </button>
             )}
             {!scoringConditionIsSelected && (
