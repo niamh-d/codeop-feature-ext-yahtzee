@@ -279,11 +279,14 @@ function GameProvider({ children }) {
     }
 
     function checkForStraights(dice) {
+      dice = [...new Set(dice)];
       const sortedRolledDiceStr = renderSortedRolledDiceStr(dice);
 
+      console.log(sortedRolledDiceStr);
+
       if (
-        (sortedRolledDiceStr.includes("1 2 3 4 5") ||
-          sortedRolledDiceStr.includes("2 3 4 5 6")) &&
+        (sortedRolledDiceStr === "1 2 3 4 5" ||
+          sortedRolledDiceStr === "2 3 4 5 6") &&
         !scoredConditionNamesLower.includes("largeStraight")
       )
         scores["largeStraight"] = largeStraightValue;
