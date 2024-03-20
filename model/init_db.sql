@@ -18,7 +18,7 @@ CREATE TABLE plays(
     `user_id` MEDIUMINT NOT NULL,
     `game_number` TINYINT(1) NOT NULL,
     `total_score_game` SMALLINT NOT NULL,
-    `yatzee_score_count` TINYINT(1) NOT NULL DEFAULT '0',
+    `yahtzee_score_count` TINYINT(1) NOT NULL DEFAULT '0',
     `total_upper_wo_bonus` SMALLINT NOT NULL,
     `total_lower_wo_bonus` SMALLINT NOT NULL,
     `rounds_played` TINYINT(1) NOT NULL DEFAULT '13',
@@ -34,7 +34,7 @@ VALUES
     ("Sophie", "Shore", "shorezy11", "shorezy11@email.com", "$2b$12$FuQTuzNlzsBcZYtSGbhvU.dlwz7nPi3H9mw1fJINjYF2t8SDVMVBq");
 
 
-INSERT INTO plays(date_played, user_id, game_number, total_score_game, yatzee_score_count, total_upper_wo_bonus, total_lower_wo_bonus, rounds_played, full_game)
+INSERT INTO plays(date_played, user_id, game_number, total_score_game, yahtzee_score_count, total_upper_wo_bonus, total_lower_wo_bonus, rounds_played, full_game)
 VALUES
     ("2024-03-10 13:01:01", 10011, 1, 116, 0, 26, 90, 5, '0'),
     ("2024-03-10 13:01:01", 10011, 2, 303, 1, 69, 199, 13, '1');

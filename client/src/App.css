@@ -35,6 +35,11 @@ td {
   font-weight: 600;
 }
 
-table {
+.scorecard-table {
   max-width: 30rem;
+}
+
+.table-plays th {
+  font-weight: 700;
+  font-size: 1.3rem;
 }

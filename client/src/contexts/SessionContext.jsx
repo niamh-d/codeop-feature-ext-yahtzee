@@ -42,12 +42,36 @@ function SessionProvider({ children }) {
     getPastPlays();
   }, [currentUser]);
 
+  function cleanPastPlaysData(pastPlays) {
+    function cleanPlay(play) {
+      const complete = play.rounds_played === 13;
+      const upperBonusScored = play.total_upper_wo_bonus >= 63;
+
+      return {
+        id: play.id,
+        date: play.date_played,
+        gameNum: play.game_number,
+        totalScore: play.total_score_game,
+        yahtzeeCount: play.yahtzee_score_count,
+        totalUpper: play.total_upper_wo_bonus,
+        totalLower: play.total_lower_wo_bonus,
+        rounds: play.rounds_played,
+        complete,
+        upperBonusScored,
+      };
+    }
+
+    const cleanedPastPlays = pastPlays.map((play) => cleanPlay(play));
+
+    dispatch({ type: "SET_PAST_PLAYS", payload: cleanedPastPlays });
+  }
+
   async function getPastPlays() {
     try {
       const id = currentUser.id;
       const res = await fetch(`/api/plays?id=${id}`);
       const data = await res.json();
-      if (data) dispatch({ type: "SET_PAST_PLAYS", payload: data });
+      if (data) cleanPastPlaysData(data);
     } catch (err) {
       console.error(err);
     }

@@ -34,7 +34,7 @@ const ScoreCard = () => {
     <div>
       <h2>ScoreCard</h2>
       <h3>Upper</h3>
-      <table>
+      <table className="scorecard-table">
         <thead>
           <tr>
             <th>Condition</th>
@@ -61,7 +61,7 @@ const ScoreCard = () => {
         </tbody>
       </table>
       <h3>Lower</h3>
-      <table>
+      <table className="scorecard-table">
         <thead>
           <tr>
             <th>Condition</th>
