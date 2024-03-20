@@ -23,7 +23,10 @@ function reducer(state, action) {
 }
 
 function SessionProvider({ children }) {
-  const [{ currentUser }, dispatch] = useReducer(reducer, initialState);
+  const [{ currentUser, pastPlays }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const { loggedInUser } = useAuth();
 
@@ -70,7 +73,9 @@ function SessionProvider({ children }) {
   }
 
   return (
-    <SessionContext.Provider value={{ savePlayDetails, currentUser }}>
+    <SessionContext.Provider
+      value={{ savePlayDetails, currentUser, pastPlays }}
+    >
       {children}
     </SessionContext.Provider>
   );

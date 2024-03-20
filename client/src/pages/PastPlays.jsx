@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import PastPlaysTable from "../components/PastPlaysTable";
 
 const PastPlays = () => {
   return (
@@ -7,6 +8,7 @@ const PastPlays = () => {
       <main className="main">
         <section>
           <h1>PastPlays</h1>
+          <PastPlaysTable />
         </section>
       </main>
     </>
