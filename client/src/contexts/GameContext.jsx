@@ -282,8 +282,6 @@ function GameProvider({ children }) {
       dice = [...new Set(dice)];
       const sortedRolledDiceStr = renderSortedRolledDiceStr(dice);
 
-      console.log(sortedRolledDiceStr);
-
       if (
         (sortedRolledDiceStr === "1 2 3 4 5" ||
           sortedRolledDiceStr === "2 3 4 5 6") &&

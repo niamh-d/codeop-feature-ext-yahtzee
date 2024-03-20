@@ -8,10 +8,13 @@ import { useAuth } from "./AuthContext";
 
 const initialState = {
   currentUser: null,
+  pastPlays: [],
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_PAST_PLAYS":
+      return { ...state, pastPlays: action.payload };
     case "SET_CURRENT_USER":
       return { ...state, currentUser: action.payload };
     default:
@@ -30,6 +33,23 @@ function SessionProvider({ children }) {
     if (!loggedInUser) dispatch({ type: "SET_CURRENT_USER", payload: null });
   }, [loggedInUser]);
 
+  useEffect(() => {
+    if (!currentUser) return;
+
+    getPastPlays();
+  }, [currentUser]);
+
+  async function getPastPlays() {
+    try {
+      const id = currentUser.id;
+      const res = await fetch(`/api/plays?id=${id}`);
+      const data = await res.json();
+      if (data) dispatch({ type: "SET_PAST_PLAYS", payload: data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function savePlayDetails(play) {
     try {
       play.userId = currentUser.id;
@@ -43,6 +63,7 @@ function SessionProvider({ children }) {
       };
       const res = await fetch("/api/plays", options);
       const data = await res.json();
+      if (data) getPastPlays();
     } catch (err) {
       console.error(err);
     }
