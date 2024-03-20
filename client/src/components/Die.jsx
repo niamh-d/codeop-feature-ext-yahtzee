@@ -11,8 +11,13 @@ const diceStyles = {
   6: { transform: "rotateX(180deg) rotateY(0deg)" },
 };
 
-const Die = ({ num, id, handler, rollAnimation = true }) => {
-  const [diceStyle, setDiceStyle] = useState({});
+const Die = ({ num, id, handler, rollAnimation = true, held=false }) => {
+
+  const initialDiceStyle = {};
+
+  if(held) initialDiceStyle.transform = diceStyles[num].transform;
+
+  const [diceStyle, setDiceStyle] = useState(initialDiceStyle);
 
   useEffect(() => {
     if (!rollAnimation) {

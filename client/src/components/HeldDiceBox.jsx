@@ -14,6 +14,7 @@ const HeldDiceBox = () => {
           key={i}
           num={num}
           id={i}
+          held={true}
           handler={returnDie}
           rollAnimation={false}
         />
