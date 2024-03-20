@@ -4,7 +4,7 @@ import PastPlaysTable from "../components/PastPlaysTable";
 const PastPlays = () => {
   return (
     <>
-      <Header />
+      <Header scoresIsShowing={true} />
       <main className="main">
         <section>
           <h1>PastPlays</h1>

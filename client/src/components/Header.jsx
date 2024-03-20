@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 import styles from "./Header.module.css";
 
-const Header = () => {
+const Header = ({ scoresIsShowing = false }) => {
   const { currentUser } = useSession();
   const { logout } = useAuth();
 
@@ -14,7 +14,8 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <h1>Yahtzə!</h1>
-      <NavLink to="/scores">Your scores</NavLink>
+      {scoresIsShowing && <NavLink to="/play">Back to game</NavLink>}
+      {!scoresIsShowing && <NavLink to="/scores">Your scores</NavLink>}
       <div className={styles["user-box"]}>
         {currentUser && (
           <div>
