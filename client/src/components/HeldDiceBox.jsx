@@ -5,7 +5,8 @@ import Die from "./Die";
 import styles from "./HeldDiceBox.module.css";
 
 const HeldDiceBox = () => {
-  const { heldDice, returnDie } = useGame();
+  const { dice, returnDie } = useGame();
+  const { heldDice } = dice;
 
   return (
     <div className={styles["dice-row"]}>

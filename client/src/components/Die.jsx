@@ -4,18 +4,24 @@ import styles from "./Die.module.css";
 
 const diceStyles = {
   1: { transform: "rotateX(0deg) rotateY(0deg)" },
-  2: { transform: "rotateX(0deg) rotateY(0deg)" },
+  2: { transform: "rotateX(-90deg) rotateY(0deg)" },
   3: { transform: "rotateX(0deg) rotateY(90deg)" },
   4: { transform: "rotateX(0deg) rotateY(-90deg)" },
   5: { transform: "rotateX(90deg) rotateY(0deg)" },
   6: { transform: "rotateX(180deg) rotateY(0deg)" },
 };
 
-const Die = ({ num, id, handler, rollAnimation = true, held=false }) => {
-
+const Die = ({
+  num,
+  id,
+  handler,
+  rollAnimation = true,
+  held = false,
+  dice,
+}) => {
   const initialDiceStyle = {};
 
-  if(held) initialDiceStyle.transform = diceStyles[num].transform;
+  if (held) initialDiceStyle.transform = diceStyles[num].transform;
 
   const [diceStyle, setDiceStyle] = useState(initialDiceStyle);
 
@@ -28,9 +34,12 @@ const Die = ({ num, id, handler, rollAnimation = true, held=false }) => {
     setDiceStyle({ animation: "rolling 3s" });
 
     setTimeout(() => {
-      setDiceStyle({ animation: "none", transform: diceStyles[num].transform });
+      setDiceStyle({
+        animation: "none",
+        transform: diceStyles[num].transform,
+      });
     }, 1050);
-  }, [rollAnimation]);
+  }, [rollAnimation, dice]);
 
   return (
     <div className={styles.die} style={diceStyle} onClick={() => handler(id)}>
