@@ -4,7 +4,7 @@ const PastPlaysRow = ({ play }) => {
     gameNum,
     totalScore,
     yahtzeeCount,
-    upperBonus,
+    upperBonusScored,
     totalUpper,
     totalLower,
     rounds,
@@ -22,7 +22,7 @@ const PastPlaysRow = ({ play }) => {
       <td>{gameNum}</td>
       <td>{totalScore}</td>
       <td>{totalUpper}</td>
-      <td>{upperBonus ? "✅" : "Not scored"}</td>
+      <td>{upperBonusScored ? "✅" : "Not scored"}</td>
       <td>{yahtzeeCount ? "⭐️".repeat(yahtzeeCount) : "None"}</td>
       <td>{totalLower}</td>
       <td>{rounds}</td>
