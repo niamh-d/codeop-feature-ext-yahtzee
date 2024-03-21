@@ -11,14 +11,14 @@ const PastPlaysRow = ({ play }) => {
     complete,
   } = play;
 
-  function dataCleaner(date) {
+  function renderDateStr(date) {
     const d = new Date(date.slice(0, 4), date.slice(5, 7), date.slice(8, 10));
     return d.toLocaleString("en-US", { dateStyle: "long" });
   }
 
   return (
     <tr>
-      <td>{dataCleaner(date)}</td>
+      <td>{renderDateStr(date)}</td>
       <td>{gameNum}</td>
       <td>{totalScore}</td>
       <td>{totalUpper}</td>
