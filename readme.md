@@ -1,33 +1,46 @@
-# Yahtzee – Feature extension bootcamp project
+# Yahtzə! (Yahtzee dice game) – Feature extension bootcamp project with React and Express
 
 ## What
 
 Fullstack bootcamp project. Feature extension of another student's MVP project.
 
+Uses React, React Router, JWT authentication, bcrypt password hashing, Pico CSS, Express, SQL, MySQL.
+
+Allows logged-in users to multiple full games of [**Yahtzee**](https://en.wikipedia.org/wiki/Yahtzee). Saves game data to backend.
+
 Original work by: Maria Rinaldi (GH: [@MaryRinaldi](https://github.com/MaryRinaldi)) – [link to repo](https://github.com/MaryRinaldi/Yahtzee_Dicee).
 
-Yahtzee game.
+## Presentation
 
-## Scenario
+[Link to presentation slides](https://drive.google.com/file/d/1RZUsBMbX36HSCxTMiQCEHRMRneZEtl-V/view?usp=sharing)
+
+![Presentation coverpage](imgs/pres.png)
+
+## Imagined Scenario
 
 I have been asked by my PM to build upon code already written by a collegue.
 
-Criteria/Constraints:
+### Criteria/Constraints:
 
 - Maintain aesthetic as much as possible while adding required new features and with (below) design inspiration in mind
 - Style with vanilla CSS as much as possible (no or minimal external libraries or frameworks)
-- Maintain dice roll animation
+- Incorporate existing dice and dice roll animation
 
 ### Required new features
 
 - Full Yahtzee game logic (DONE)
+- Redesign of app to incorporate below features (DONE)
 - Scoreboard (DONE)
-- Saving user scores to backend (TO DO)
+- Log in and sign up pages and logic (DONE)
+- Saving user scores to backend (DONE)
 
-If time allows:
+### If time allows:
 
-- Authentication
-- Permit two players to play against each other in same session
+- Authentication and password hashing (DONE)
+- Display previous play history (DONE)
+- Navbar (DONE)
+- Permit two players to play against each other in same session (NOT DONE)
+- Play against computer (NOT DONE)
 
 ## Design
 
@@ -44,6 +57,24 @@ Layout example with scoreboard from [link](https://cardgames.io/yahtzee/).
 ### Example of Scoreboard
 
 ![Example of Yahtzee scoreboard](imgs/scoreboard.png)
+
+## Redesign
+
+### Scoreboard and dice boxes
+
+![Gamepage screen](imgs/game.png)
+
+### Homepage
+
+![Home screen](imgs/homepage.png)
+
+### Login
+
+![Login screen](imgs/login.png)
+
+### Sign up
+
+![Sign up screen](imgs/signup.png)
 
 ## Running
 
