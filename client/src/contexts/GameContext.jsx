@@ -34,6 +34,7 @@ function GameProvider({ children }) {
       isScoreable,
       yahtzee,
       counts,
+      isFreshRoll,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -392,6 +393,7 @@ function GameProvider({ children }) {
         scoringConditionIsSelected,
         gameIsEnded,
         isScoreable,
+        isFreshRoll,
         yahtzee,
         counts,
       }}

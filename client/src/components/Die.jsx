@@ -17,29 +17,25 @@ const Die = ({
   handler,
   rollAnimation = true,
   held = false,
-  dice,
+  freshRoll,
 }) => {
-  const initialDiceStyle = {};
+  const numStyle = diceStyles[num];
 
-  if (held) initialDiceStyle.transform = diceStyles[num].transform;
+  const [diceStyle, setDiceStyle] = useState(numStyle);
 
-  const [diceStyle, setDiceStyle] = useState(initialDiceStyle);
+  const animation = { animation: "rolling 3s" };
 
   useEffect(() => {
-    if (!rollAnimation) {
-      setDiceStyle({ animation: "none", transform: diceStyles[num].transform });
-      return;
+    if (!rollAnimation) return;
+
+    if (freshRoll) {
+      setDiceStyle(animation);
+
+      setTimeout(() => {
+        setDiceStyle(numStyle);
+      }, 900);
     }
-
-    setDiceStyle({ animation: "rolling 3s" });
-
-    setTimeout(() => {
-      setDiceStyle({
-        animation: "none",
-        transform: diceStyles[num].transform,
-      });
-    }, 1050);
-  }, [rollAnimation, dice]);
+  }, [rollAnimation, freshRoll]);
 
   return (
     <div className={styles.die} style={diceStyle} onClick={() => handler(id)}>

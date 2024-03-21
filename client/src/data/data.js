@@ -34,6 +34,7 @@ export const fixedScoresAndBonuses = {
 };
 
 export const initialState = {
+  isFreshRoll: false,
   gameIsEnded: false,
   isScoreable: false,
   scoringConditionIsSelected: true,
