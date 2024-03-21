@@ -16,6 +16,10 @@ Original work by: Maria Rinaldi (GH: [@MaryRinaldi](https://github.com/MaryRinal
 
 ![Presentation coverpage](imgs/pres.png)
 
+## Front end only version
+
+If you want to play the game and aren’t interested in the backend and authentication aspects, I have a [repo](https://github.com/niamh-d/yahtzee-just-the-game) with **just the front-end** without any signup/login or user details, and which saves to **local storage** (rather than DB).
+
 ## Imagined Scenario
 
 I have been asked by my PM to build upon code already written by a collegue.
