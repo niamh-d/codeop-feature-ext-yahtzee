@@ -43,3 +43,9 @@ td {
   font-weight: 700;
   font-size: 1.3rem;
 }
+
+@keyframes rolling {
+  50% {
+    transform: rotateX(455deg) rotateY(455deg);
+  }
+}

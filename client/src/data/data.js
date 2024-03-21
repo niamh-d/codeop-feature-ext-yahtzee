@@ -22,6 +22,7 @@ export const gameSettings = {
   TOTAL_NUM_DICE: 5,
   NUM_ROUNDS: 13,
   NUM_ROLLS: 3,
+  NUM_DIE_SIDES: 6,
 };
 
 export const fixedScoresAndBonuses = {
@@ -34,6 +35,7 @@ export const fixedScoresAndBonuses = {
 };
 
 export const initialState = {
+  isFreshRoll: false,
   gameIsEnded: false,
   isScoreable: false,
   scoringConditionIsSelected: true,

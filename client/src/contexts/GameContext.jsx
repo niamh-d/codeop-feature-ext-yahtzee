@@ -11,6 +11,7 @@ import {
   gameSettings,
 } from "../data/data";
 import {
+  randKey,
   randInt,
   sumUp,
   filterDiceAndCalculateLength,
@@ -34,6 +35,7 @@ function GameProvider({ children }) {
       isScoreable,
       yahtzee,
       counts,
+      isFreshRoll,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -43,7 +45,7 @@ function GameProvider({ children }) {
   const { rolledDice, heldDice, diceToScore } = dice;
   const { countRolled, countRound } = counts;
   const { yahtzeeScoreCount } = yahtzee;
-  const { TOTAL_NUM_DICE, NUM_ROUNDS, NUM_ROLLS } = gameSettings;
+  const { TOTAL_NUM_DICE, NUM_ROUNDS, NUM_ROLLS, NUM_DIE_SIDES } = gameSettings;
 
   // SET-UP AND SCORED CONDITION NAMES AND SCORES
 
@@ -79,7 +81,9 @@ function GameProvider({ children }) {
 
   function rollDice() {
     const numOfDiceToRoll = TOTAL_NUM_DICE - heldDice.length;
-    const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) => randInt());
+    const rolledNewDice = [...Array(numOfDiceToRoll)].map((_) =>
+      randInt(NUM_DIE_SIDES)
+    );
     const diceToScore = [...heldDice, ...rolledNewDice];
 
     dispatch({ type: "SET_ROLLED_DICE", payload: rolledNewDice });
@@ -388,15 +392,16 @@ function GameProvider({ children }) {
         scoreConditionCell,
         endGameEarly,
         newGame,
-        rolledDice,
-        heldDice,
+        dice,
         displayedScoringCells,
         scoredTotalsAndBonuses,
         scoringConditionIsSelected,
         gameIsEnded,
         isScoreable,
+        isFreshRoll,
         yahtzee,
         counts,
+        randKey,
       }}
     >
       {children}

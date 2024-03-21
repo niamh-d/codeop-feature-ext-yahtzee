@@ -3,9 +3,17 @@ import { initialState } from "../data/data";
 export default function reducer(state, action) {
   switch (action.type) {
     case "SET_ROLLED_DICE":
-      return { ...state, dice: { ...state.dice, rolledDice: action.payload } };
+      return {
+        ...state,
+        isFreshRoll: true,
+        dice: { ...state.dice, rolledDice: action.payload },
+      };
     case "SET_HELD_DICE":
-      return { ...state, dice: { ...state.dice, heldDice: action.payload } };
+      return {
+        ...state,
+        isFreshRoll: false,
+        dice: { ...state.dice, heldDice: action.payload },
+      };
     case "SET_SCORED_DICE":
       return {
         ...state,

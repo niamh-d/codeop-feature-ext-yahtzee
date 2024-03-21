@@ -1,16 +1,18 @@
-import { useGame } from "../contexts/GameContext";
-
 import Die from "./Die";
 
 import styles from "./HeldDiceBox.module.css";
 
-const HeldDiceBox = () => {
-  const { heldDice, returnDie } = useGame();
-
+const HeldDiceBox = ({ dice, returnHandler, randKey }) => {
   return (
     <div className={styles["dice-row"]}>
-      {heldDice.map((num, i) => (
-        <Die key={i} num={num} id={i} handler={returnDie} />
+      {dice.map((num, i) => (
+        <Die
+          key={`*${num}*${randKey()}`}
+          num={num}
+          id={i}
+          handler={returnHandler}
+          rollAnimation={false}
+        />
       ))}
     </div>
   );

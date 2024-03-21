@@ -3,16 +3,22 @@ import { useGame } from "../contexts/GameContext";
 
 import styles from "./DiceRollBox.module.css";
 
-const DiceBox = () => {
-  const { rolledDice, holdDie } = useGame();
+const DiceRollBox = ({ dice, holdHandler, randKey }) => {
+  const { isFreshRoll } = useGame();
 
   return (
     <div className={styles["dice-row"]}>
-      {rolledDice.map((num, i) => (
-        <Die key={i} num={num} id={i} handler={holdDie} />
+      {dice.map((num, i) => (
+        <Die
+          key={`*${num}*${randKey()}`}
+          num={num}
+          id={i}
+          handler={holdHandler}
+          freshRoll={isFreshRoll}
+        />
       ))}
     </div>
   );
 };
 
-export default DiceBox;
+export default DiceRollBox;
