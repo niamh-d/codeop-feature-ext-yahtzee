@@ -15,7 +15,7 @@ export function calculateMatchedLength(unique, dice) {
 }
 
 export function randKey() {
-  const [start, end] = [randInt(strLength / 5), randInt(strLength / 5)].sort(
+  const [start, end] = [randInt(strLength / 10), randInt(strLength / 3)].sort(
     (a, b) => a - b
   );
 
@@ -25,7 +25,7 @@ export function randKey() {
 }
 
 const poem =
-  "messe ocus pangur ban cechtar nathar fria saindan bith a menmasam fri seilgg mu menma céin im saincheirdd araimse fos ferr cach clu oc mu lebran leir ingnu ni foirmtech frimm pangur ban caraid cesin a maccdan";
+  "messe ocus pangur ban cechtar nathar fria saindan bith a menmasam fri seilgg mu menma cein im saincheirdd araimse fos ferr cach clu oc mu lebran leir ingnu ni foirmtech frimm pangur ban caraid cesin a maccdan orubiam scel cen scis innar tegdais ar noendis taithiunn dichrichide clius ni fristarddam arnathius gnath huaraib ar gressaib gal glenaid luch inna linsam os me dufuit im lin chein dliged ndoraid cu ndroncheill fuachaidsem fri frega fal a rosc anglese comlan fuachimm chein fri fegi fis mu rosc reil cesu imdis faelidsem cu ndene dul hinglen luch inna gerchrub hi tucu cheist ndoraid ndil os me chene am faelid cia beimmi amin nach re, ni derban cach a chele maith la cechtar nar a dan, subaigthius a oenuran he fesin as choimsid dau in muid dungni cach oenlau du thabairt doraid du gle for mu mud cein am messe";
 
 const str = poem.replaceAll(" ", "");
 const strLength = str.length;
