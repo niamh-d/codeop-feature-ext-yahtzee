@@ -11,16 +11,10 @@ const diceStyles = {
   6: { transform: "rotateX(180deg) rotateY(0deg)" },
 };
 
-const Die = ({
-  num,
-  id,
-  handler,
-  rollAnimation = true,
-  freshRoll,
-}) => {
+const Die = ({ num, id, handler, rollAnimation = true, freshRoll }) => {
   const numStyle = diceStyles[num];
 
-  const [diceStyle, setDiceStyle] = useState(numStyle);
+  const [dieStyle, setDieStyle] = useState(numStyle);
 
   const animation = { animation: "rolling 3s" };
 
@@ -28,16 +22,16 @@ const Die = ({
     if (!rollAnimation) return;
 
     if (freshRoll) {
-      setDiceStyle(animation);
+      setDieStyle(animation);
 
       setTimeout(() => {
-        setDiceStyle(numStyle);
+        setDieStyle(numStyle);
       }, 900);
     }
   }, [rollAnimation, freshRoll]);
 
   return (
-    <div className={styles.die} style={diceStyle} onClick={() => handler(id)}>
+    <div className={styles.die} style={dieStyle} onClick={() => handler(id)}>
       <div className={`${styles.face} ${styles.front}`}></div>
       <div className={`${styles.face} ${styles.back}`}></div>
       <div className={`${styles.face} ${styles.top}`}></div>
