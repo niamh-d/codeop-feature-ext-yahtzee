@@ -16,7 +16,6 @@ const Die = ({
   id,
   handler,
   rollAnimation = true,
-  held = false,
   freshRoll,
 }) => {
   const numStyle = diceStyles[num];

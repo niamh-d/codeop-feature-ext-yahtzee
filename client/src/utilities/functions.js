@@ -15,11 +15,17 @@ export function calculateMatchedLength(unique, dice) {
 }
 
 export function randKey() {
-  const randInt17 = randInt(17);
-  return `${randInt17}${wordsArr[randInt17]}`;
+  const [start, end] = [randInt(strLength / 5), randInt(strLength / 5)].sort(
+    (a, b) => a - b
+  );
+
+  const k = `${str.slice(start, end)}${start + end}`;
+
+  return k;
 }
 
-const wordsArr =
-  "messe ocus pangur ban cechtar nathar fria saindan bith a menmasam fri seilgg mu menma céin im saincheirdd".split(
-    " "
-  );
+const poem =
+  "messe ocus pangur ban cechtar nathar fria saindan bith a menmasam fri seilgg mu menma céin im saincheirdd araimse fos ferr cach clu oc mu lebran leir ingnu ni foirmtech frimm pangur ban caraid cesin a maccdan";
+
+const str = poem.replaceAll(" ", "");
+const strLength = str.length;

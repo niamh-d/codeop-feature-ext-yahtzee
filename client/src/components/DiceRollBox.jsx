@@ -10,7 +10,7 @@ const DiceRollBox = ({ dice, holdHandler, randKey }) => {
     <div className={styles["dice-row"]}>
       {dice.map((num, i) => (
         <Die
-          key={`${randKey()}_${num}`}
+          key={`*${num}*${randKey()}`}
           num={num}
           id={i}
           handler={holdHandler}

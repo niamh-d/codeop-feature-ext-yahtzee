@@ -7,10 +7,9 @@ const HeldDiceBox = ({ dice, returnHandler, randKey }) => {
     <div className={styles["dice-row"]}>
       {dice.map((num, i) => (
         <Die
-          key={`${randKey()}_${num}`}
+          key={`*${num}*${randKey()}`}
           num={num}
           id={i}
-          held={true}
           handler={returnHandler}
           rollAnimation={false}
         />
