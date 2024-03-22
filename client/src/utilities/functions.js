@@ -15,11 +15,9 @@ export function calculateMatchedLength(unique, dice) {
 }
 
 export function randKey() {
-  const [start, end] = [randInt(strLength / 10), randInt(strLength / 3)].sort(
-    (a, b) => a - b
-  );
+  const start = randInt(strLength - 30);
 
-  const k = `${str.slice(start, end)}${start + end}`;
+  const k = `${str.slice(start, start + 20)}*${start}`;
 
   return k;
 }
